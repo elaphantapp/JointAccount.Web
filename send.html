@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+</head>
+<style type="text/css">
+    .top {
+        position: fixed;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        left: 0px;
+        top: 0px;
+        background: #0070C8;
+    }
+    
+    .top p {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 40px;
+        color: #FFFFFF;
+    }
+    
+    .top p img {
+        vertical-align: middle;
+        margin-top: -3px;
+        margin-right: 10px;
+    }
+    
+    .first {
+        position: relative;
+        border-top: 1px solid #BDDBFF;
+        border-left: 15px solid #BDDBFF;
+        border-right: 1px solid #BDDBFF;
+        border-bottom: 1px solid #BDDBFF;
+        padding: 0px 20px 20px 40px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+    }
+    
+    .leftright {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .first .hang {
+        height: 60;
+    }
+    
+    .first .hang input {
+        width: 95%;
+        padding-left: 10px;
+        height: 60px;
+        border: 0;
+    }
+    
+    .first .hang .col-xs-1 .line {
+        display: inline-block;
+        height: 30px;
+    }
+    
+    .third {
+        margin-top: 30px;
+        text-align: center;
+    }
+    
+    .third .right {
+        display: inline-block;
+        width: 232px;
+        height: 64px;
+        line-height: 64px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 20px;
+        color: #FFFFFF;
+        border: 1px solid #0070C8;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background: #0070C8;
+        margin-left: 10px;
+    }
+    
+    .toast {
+        position: fixed;
+        z-index: 2000;
+        left: 50%;
+        top: 25%;
+        transition: all .5s;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        text-align: center;
+        border-radius: 5px;
+        color: #FFF;
+        background: rgba(17, 17, 17, 0.7);
+        height: 45px;
+        line-height: 45px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: url(./images/mpc_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        z-index: -1;
+    }
+    
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="toast" v-show="toastShow">
+            {{toastText}}
+        </div>
+        <div class="bg"></div>
+        <div class="top" @click="back">
+            <p> <img src="./images/back.png" />{{curLangule["title"]}}</p>
+        </div>
+        <div style="margin-top:90px"></div>
+        <div class="container">
+            <div style=" padding: 10px 20px 10px 15px;">
+                <div class="row">
+                    <div class="col-xs-12 leftright" style="text-align:left">{{curLangule["key4"]}}：{{balance["num"]}} ELA</div>
+                </div>
+            </div>
+            <div class="first">
+                <div class="row hang">
+                    <div class="col-xs-1 leftright" style="line-height: 60px">
+                        {{curLangule["key5"]}}
+                    </div>
+                    <div class="col-xs-11 leftright" style="border-bottom: 1px solid #DDDDDD;">
+                        <img src="./images/line.png" /><input :placeholder="curLangule['key']" v-model="elaAdress" />
+                    </div>
+                </div>
+
+                <div class="row hang">
+                    <div class="col-xs-1 leftright" style="line-height: 60px">
+                        {{curLangule["key6"]}}
+                    </div>
+                    <div class="col-xs-11 leftright" style="border-bottom: 1px solid #DDDDDD;">
+                        <img src="./images/line.png" /><input :placeholder="curLangule['key1']" v-model="amount" />
+                    </div>
+                </div>
+
+                <div class="row hang">
+                    <div class="col-xs-1 leftright" style="line-height: 60px">
+                        {{curLangule["key7"]}}
+                    </div>
+                    <div class="col-xs-11 leftright">
+                        <img src="./images/line.png" /><input :placeholder="curLangule['key2']" v-model="memo" />
+                    </div>
+                </div>
+            </div>
+            <div style=" padding: 10px 20px 20px 40px;">
+                <div class="row">
+                    <div class="col-xs-12 leftright" style="text-align: right">{{curLangule["key3"]}}0.0000486 ELA</div>
+                </div>
+            </div>
+            <div class="third">
+                <span class="right" @click="send">{{curLangule["key8"]}}</span>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            zh: {
+                title: 'Elastos 多签钱包',
+                key: "输入ELA接收地址",
+                key1: "输入金额",
+                key2: "输入备注",
+                key3: '矿工费: ',
+                key4: '余额',
+                key5: '发送到',
+                key6: '数量',
+                key7: '备注',
+                key8: '发送',
+                error5: '请输入ELA接收地址',
+                error6: '请输入ELA金额',
+                error7: '请输入正确的金额',
+                error8: '余额不足',
+                error9: '地址不合法',
+                error10: 'Memo 不能超过250字符',
+            },
+            en: {
+                title: 'Elastos Multi Sign Wallet',
+                key: "Please enter ELA receive address",
+                key1: "Input your amount",
+                key2: "Input your memo",
+                key3: 'Miner Fee: ',
+                key4: 'Balance',
+                key5: 'Send to',
+                key6: 'Amount',
+                key7: 'Memo',
+                key8: 'Send',
+                error5: 'Please enter ELA receive address',
+                error6: 'Please enter the amount of ELA',
+                error7: 'Wrong Amount',
+                error8: 'The balance is not enough',
+                error9: 'Illegal address',
+                error10: "Memo can't be more than 250 characters",
+            },
+            curLangule: {},
+            walletList: {},
+            schemeConfig: {
+                "AppID": "f4d54cd97afa828a9705e38eb679fad564cf3adf4cecd1a5503498155969b07baaa4c4a016084c0f21e06c59e76c33929925052d7d0ae3cfc679a0fdf48ec23f",
+                "AppName": "ELA Multi-sig Wallet",
+                "DID": "ipFFpL1JwPRQKfhmxak8r1wWEbdkJ3rXZu",
+                "PublicKey": "035731ff69f8cfdcd9881e573143d71de2390b2e8e71fa14729e6b506f5d74939d",
+                "Tx": "",
+                "ReturnUrl": "",
+            },
+            balance: {
+                'num': 0
+            },
+            address: "",
+            toastText: "",
+            toastShow: false,
+            // elaAdress: "EYf3wvaiNHWvrEXL1bwSV5LytbhiPb6Vby",
+            elaAdress: "",
+            amount: "",
+            memo: "",
+            sela: 100000000,
+        },
+        methods: {
+            getUrl() {
+                //获取当前网址，
+                var curPath = window.document.location.href;
+                //获取主机地址之后的目录，
+                var pathName = window.document.location.pathname;
+                var pos = curPath.indexOf(pathName);
+                //获取主机地址
+                var localhostPaht = curPath.substring(0, pos);
+                return localhostPaht;
+            },
+            getLen2(str) {　　　　 //将中文替换成两个英文字符来统计
+                return str.replace(/[^\x00-\xff]/g, "aa").length;
+            },
+            getTx() {
+                var parms = {
+                    inputs: [this.address],
+                    outputs: [{
+                        addr: this.elaAdress,
+                        amt: this.accMul(this.amount, this.sela)
+                    }]
+                }
+                return new Promise((resovle, reject) => {
+                    $.ajax({
+                        url: 'https://node1.elaphant.app/api/1/createVoteTx',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: 'POST',
+                        data: JSON.stringify(parms),
+                        success: function(data) { //成功回调函数
+                            resovle(data);
+                        },
+                        error: function(err) { //失败回调函数
+                            reject(err);
+                        }
+                    });
+
+
+                })
+            },
+            isAddressValid(address) {
+                var r = false;
+                if (address.length != 34) {
+                    return r
+                }
+
+                r = (address[0] == 'E' || address[0] == 'i' ||
+                    address[0] == '8' || address[0] == 'X' || address[0] == 'D')
+
+                if (r == false && address === "1111111111111111111114oLvT2") {
+                    r = true;
+                }
+
+                return r;
+            },
+            accMul(arg1, arg2) {
+                var m = 0,
+                    s1 = arg1.toString(),
+                    s2 = arg2.toString();
+                try {
+                    m += s1.split(".")[1].length;
+                } catch (e) {}
+                try {
+                    m += s2.split(".")[1].length;
+                } catch (e) {}
+                return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+            },
+            number(text) {
+                var numPattern = /^(([1-9]\d*)|\d)(\.\d{1,9})?$/;
+                return numPattern.test(text);
+            },
+            buildMultiTx(tx) {
+                if (this.memo != "") {
+                    var msg = "type:text,msg:";
+                    tx.Transactions[0].Memo = msg + this.memo;
+                }
+                var txJson = JSON.stringify(tx);
+                this.schemeConfig['Tx'] = txJson;
+
+                var baseUrl = this.getUrl();
+                this.schemeConfig['ReturnUrl'] = baseUrl + '/walletDetails.html?' + 'address=' + this.address;
+                var url = "elaphant://multitx?";
+                var that = this;
+                _.forEach(this.schemeConfig, function(val, key, index) {
+                    if (key === 'ReturnUrl') {
+                        val = encodeURIComponent(val);
+                    } else if (key === 'Tx') {
+                        val = encodeURIComponent(val);
+                    }
+                    if (key === 'ReturnUrl') {
+                        url += key + '=' + val;
+                    } else {
+                        url += key + '=' + val + '&';
+                    }
+                });
+                return url;
+            },
+            send() {
+                if (this.checkParm()) {
+                    var v = this;
+                    this.getTx().then((data) => {
+
+                        if (data.status === 200) {
+                            var url = v.buildMultiTx(data.result);
+                            var turl = 'https://launch.elaphant.app?appName=ELA Multi-sig Wallet&autoRedirect=True&appTitle=ELA Multi-sig Wallet&redirectURL=' + encodeURIComponent(url);
+                            location.href = turl;
+                        } else if (data.status === 400) {
+                            if (data.result === "Not Enough UTXO") {
+                                this.toast(this.curLangule['error8']);
+                            }
+                        }
+                    }).catch((err => {
+
+                    }));
+                }
+            },
+            checkParm() {
+                if (this.elaAdress === "") {
+                    this.toast(this.curLangule['error5'])
+                    return false;
+                }
+                var isOK = !this.isAddressValid(this.elaAdress);
+                if (isOK) {
+                    this.toast(this.curLangule['error9'])
+                    return false;
+                }
+                if (this.amount === "") {
+                    this.toast(this.curLangule['error6'])
+                    return false;
+                }
+
+                if (!this.number(this.amount)) {
+                    this.toast(this.curLangule['error7'])
+                    return false;
+                }
+
+                if (this.amount <= 0) {
+                    this.toast(this.curLangule['error7'])
+                    return false;
+                }
+
+                if (this.amount > this.balance['num']) {
+                    this.toast(this.curLangule['error8']);
+                    return;
+                }
+
+                if (this.amount.toString().indexOf(".") > -1 && this.amount.toString().split(".")[1].length > 8) {
+                    this.toast(this.curLangule['error7'])
+                    return false;
+                }
+
+                if (this.getLen2(this.memo) >= 250) {
+                    this.toast(this.curLangule['error10'])
+                    return false;
+                }
+
+                return true;
+            },
+            getBalance(address) {
+                return new Promise((resovle, reject) => {
+                    $.ajax({
+                        url: 'https://node1.elaphant.app/api/1/balance/' + address,
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: 'GET',
+                        success: function(data) { //成功回调函数
+                            resovle(data);
+                        },
+                        error: function(err) { //失败回调函数
+                            reject(err);
+                        }
+                    });
+                })
+            },
+            doCopy() {
+                var v = this;
+                this.$copyText(this.qrcode).then(function(e) {
+                    v.toast(v.curLangule['key29']);
+                }, function(e) {})
+            },
+            toast(str) {
+                var v = this;
+                v.toastText = str
+                v.toastShow = true
+                setTimeout(function() {
+                    v.toastShow = false
+                }, 1500)
+            },
+            getUrlParam: function(name) {
+                //正则表达式过滤
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                //正则规则
+                var r = window.location.search.substr(1).match(reg);
+
+                if (r != null) return decodeURI(r[2]);
+                return null;
+            },
+            back() {
+                location.href = "./index.html";
+            },
+            getLanugle: function() {
+                this.curLangule = this.en;
+                this.curLanguleKey = 'en';
+                var JsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+                if (JsSrc.indexOf('zh') >= 0) {
+                    // 假如浏览器语言是中文
+                    this.curLanguleKey = 'zh';
+                    this.curLangule = this.zh;
+                } else if (JsSrc.indexOf('en') >= 0) {
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                } else {
+                    // 假如浏览器语言是其它语言
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                }
+            }
+        },
+        mounted() {
+            this.getLanugle();
+            document.title = this.curLangule["title"];
+            this.address = this.getUrlParam("address");
+            //this.address = '8XAqZYqyVcmHL6kuVGMdv755FJF26GggYv';
+            this.getBalance(this.address).then((res) => {
+                if (res.status === 200) {
+                    this.$set(this.balance, 'num', res.result);
+                } else {
+                    this.$set(this.balance, 'num', 0);
+                }
+            });
+        }
+    });
+</script>
+
+</html>

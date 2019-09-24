@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/vue-clipboard.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+</head>
+<style type="text/css">
+    .top {
+        position: fixed;
+        z-index: 9999;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        left: 0px;
+        top: 0px;
+        background: #0070C8;
+    }
+    
+    .top p {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 40px;
+        color: #FFFFFF;
+    }
+    
+    .top p img {
+        vertical-align: middle;
+        margin-top: -3px;
+        margin-right: 10px;
+    }
+    
+    .first {
+        position: relative;
+        border-top: 1px solid #BDDBFF;
+        border-left: 15px solid #BDDBFF;
+        border-right: 1px solid #BDDBFF;
+        border-bottom: 1px solid #BDDBFF;
+        padding: 0px 20px 20px 40px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background: #F2F9FF;
+    }
+    
+    .first .hang {
+        width: 100%;
+        margin-left: 0px;
+        border-bottom: 1px solid #dddddd;
+    }
+    
+    .first .hang input {
+        /* padding: 0px; */
+        width: 100%;
+        border: 0;
+        height: 72px;
+        /* line-height: 72px; */
+    }
+    
+    .first .hang1 {
+        width: 100%;
+        height: 52px;
+        line-height: 52px;
+        margin-left: 0px;
+    }
+    
+    .first .hang1 .left {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        color: #999999;
+    }
+    
+    .first .hang1 .right {
+        display: inline-block;
+        width: 64px;
+        height: 24px;
+        line-height: 24px;
+        border: 1px solid #A3C8F4;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: #4F92D0;
+    }
+    
+    .first .hang2 {
+        width: 100%;
+        height: 52px;
+        line-height: 52px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    .first .hang2 .left {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        color: #999999;
+    }
+    
+    .first .hang3 {
+        margin-top: 20px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    .first .hang3 .right {
+        display: inline-block;
+        width: 64px;
+        height: 24px;
+        line-height: 24px;
+        border: 1px solid #A3C8F4;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: #4F92D0;
+    }
+    
+    .tr {
+        width: 100%;
+        height: 52px;
+        border: 0;
+        resize: none;
+    }
+    
+    .line {
+        border: 1px solid #BDDBFF;
+    }
+    
+    .hang4 {
+        margin: 20px 0px;
+    }
+    
+    .second {
+        position: relative;
+        border-top: 1px solid #BDDBFF;
+        border-left: 15px solid #BDDBFF;
+        border-right: 1px solid #BDDBFF;
+        border-bottom: 1px solid #BDDBFF;
+        padding: 0px 20px 20px 40px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+    }
+    
+    .second .hang1 {
+        margin: 10px 0px;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    
+    .second .hang1 .left {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        color: #333333;
+    }
+    
+    .second .hang1 input {
+        margin-left: 10px;
+        border: 0;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        color: #0070C8;
+        height: 32px;
+        vertical-align: middle;
+    }
+    
+    .second .hang2 {
+        margin: 0px 0px;
+    }
+    
+    .second .hang2 .left {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        color: #333333;
+    }
+    
+    .second .hang2 input {
+        margin-left: 10px;
+        border: 0;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        color: #0070C8;
+        height: 32px;
+        vertical-align: middle;
+    }
+    
+    .leftright {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    
+    .kuang {
+        float: left;
+        width: 100px;
+        height: 32px;
+        box-sizing: border-box;
+        border-radius: 100px;
+        margin-left: 10px;
+        border: 1px solid #DEDEE0;
+    }
+    
+    .third {
+        margin-top: 30px;
+        padding-bottom: 40px;
+        text-align: center;
+    }
+    
+    .third .left {
+        margin-right: 10px;
+        display: inline-block;
+        width: 232px;
+        height: 64px;
+        line-height: 64px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 20px;
+        color: #0070C8;
+        border: 1px solid #0070C8;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+    
+    .third .right {
+        display: inline-block;
+        width: 232px;
+        height: 64px;
+        line-height: 64px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 20px;
+        color: #FFFFFF;
+        border: 1px solid #0070C8;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background: #0070C8;
+        margin-left: 10px;
+    }
+    
+    .toast {
+        position: fixed;
+        z-index: 2000;
+        left: 50%;
+        top: 25%;
+        transition: all .5s;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        text-align: center;
+        border-radius: 5px;
+        color: #FFF;
+        background: rgba(17, 17, 17, 0.7);
+        height: 45px;
+        line-height: 45px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: url(./images/mpc_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        z-index: -1;
+    }
+    
+    .xiaoshou {
+        cursor: pointer;
+    }
+    
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="toast" v-show="toastShow">
+            {{toastText}}
+        </div>
+        <div class="bg">
+
+        </div>
+        <div class="top" @click="back">
+            <p> <img src="./images/back.png" />{{curLangule["title"]}}</p>
+        </div>
+        <div style="margin-top:95px"></div>
+        <div class="container">
+            <div class="first">
+                <div class="row hang">
+                    <div class="col-xs-12 leftright">
+                        <input :placeholder="curLangule['key']" v-model="walletName" />
+                    </div>
+                </div>
+                <div class="row hang1" v-for="(item,index) in publickeyArr">
+                    <div class="col-xs-10 left leftright">{{item}} <input :placeholder="curLangule['key51']" style="border: 0;outline: none;margin: 5px 10px;text-align:left;width: 260px" v-on:input="saveNc()" v-model="ncObj[item]" /></div>
+                    <div class="col-xs-2 text-center leftright" @click="doCopy(item)"><span class="right xiaoshou">{{curLangule['key1']}}</span></div>
+                </div>
+                <!-- <div class="row hang2">
+                    <div class="col-xs-12 left leftright" style=" border-bottom: 1px solid #dddddd;">DID:{{did}}</div>
+                </div> -->
+
+                <div class="row hang3">
+                    <div class="col-xs-10 left leftright" style="margin-top: 5px;"><textarea :placeholder="curLangule['key2']" class="tr" v-model="spublic"></textarea></div>
+                    <div class="col-xs-2 text-center leftright" @click="addPublicKey" style="margin-top: 5px;"><span class="right xiaoshou">{{curLangule['key9']}}</span></div>
+                </div>
+            </div>
+
+            <div class="row hang4">
+                <div class="col-xs-12 line leftright"></div>
+            </div>
+
+            <div class="second">
+                <div class="row hang1">
+                    <div class="col-xs-12 left leftright">{{curLangule['key4']}}:<input v-model="number" /></div>
+                </div>
+
+                <div class="row hang2">
+                    <div class="col-xs-12 left leftright">
+                        <div style="float: left;">{{curLangule['key5']}}:</div>
+                        <div class="kuang"> <span style="width: 20px;
+                            display:inline-block;text-align: center;font-size: 18px;color: #888888;cursor: pointer;" @click="jian">-</span>
+                            <span style="width:1px;
+                                display:inline-block;text-align: center;font-size: 18px;color: #DEDEE0;">|</span>
+                            <span style="width: 20px;
+                                display:inline-block;text-align: center;font-size: 18px;color: #0070C8;">{{schemeConfig['RequiredCount']}}</span>
+                            <span style="width:1px;
+                                display:inline-block;text-align: center;font-size: 18px;color: #DEDEE0;">|</span>
+                            <span style="width: 20px;
+                                display:inline-block;text-align: center;font-size: 18px;color: #888888;cursor: pointer;" @click="jia">+</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="third">
+                <span class="left" @click="invite">{{curLangule['key7']}}</span> <span class="right" @click="create">{{curLangule['key8']}}</span>
+            </div>
+        </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            zh: {
+                title: 'Elastos 多签钱包',
+                key: "钱包名字 | 输入钱包名字",
+                key1: "复制",
+                key2: "添加公钥",
+                key3: "添加",
+                key4: '公钥总数',
+                key5: '必需批准数',
+                key6: '复制成功',
+                key7: '邀请',
+                key8: '创建',
+                key9: '添加',
+                key51: '添加备注',
+                error0: '请输入钱包名字',
+                error1: '请输入公钥',
+                error2: '公钥已存在',
+                error3: '钱包名字已存在',
+                error4: '钱包名字不能超过30字符',
+                error5: '公钥重复',
+            },
+            en: {
+                title: 'Elastos Multi Sign Wallet',
+                key: "Wallet Name | Input your wallet name",
+                key1: "Copy",
+                key2: "Add public key",
+                key3: "Add",
+                key4: 'Total public keys',
+                key5: 'Need public keys',
+                key6: 'Copy Success',
+                key7: 'Invite',
+                key8: 'Create',
+                key9: 'Add',
+                key51: 'Add Remarks',
+                error0: 'Please enter the name of your wallet',
+                error1: 'Please enter public key',
+                error2: 'The public key already exists',
+                error3: 'The wallet name already exists',
+                error4: "Wallet name can't be more than 30 characters",
+                error5: 'The public key Repeat',
+            },
+            curLangule: {},
+            walletList: {},
+            schemeConfig: {
+                "AppID": "f4d54cd97afa828a9705e38eb679fad564cf3adf4cecd1a5503498155969b07baaa4c4a016084c0f21e06c59e76c33929925052d7d0ae3cfc679a0fdf48ec23f",
+                "AppName": encodeURIComponent("ELA Multi-sig Wallet"),
+                "DID": "ipFFpL1JwPRQKfhmxak8r1wWEbdkJ3rXZu",
+                "PublicKey": "035731ff69f8cfdcd9881e573143d71de2390b2e8e71fa14729e6b506f5d74939d",
+                "PublicKeys": "",
+                "RequiredCount": 2,
+                "ReturnUrl": "",
+            },
+            schemeConfig1: {
+                "AppID": "f4d54cd97afa828a9705e38eb679fad564cf3adf4cecd1a5503498155969b07baaa4c4a016084c0f21e06c59e76c33929925052d7d0ae3cfc679a0fdf48ec23f",
+                "AppName": encodeURIComponent("ELA Multi-sig Wallet"),
+                "DID": "ipFFpL1JwPRQKfhmxak8r1wWEbdkJ3rXZu",
+                "PublicKey": "035731ff69f8cfdcd9881e573143d71de2390b2e8e71fa14729e6b506f5d74939d",
+                "RandomNumber": "123456789",
+                "ReturnUrl": "",
+                "RequestInfo": "Nickname"
+            },
+            number: 1,
+            walletName: "ela",
+            spublic: "",
+            publickeyArr: ["02850ff33b13e6671df7ca599ef41976eb432f143f714027531bacc7fa4c8b324b", "03ddd9b47aa1fd44cf6125134c4a782e1be34165f71ea04cc5ab232835eaf82730", "039c2699a877d2f7c860f8c0df36d26747f893f546bc4fb3f963f2baab8ed3fed5", "0342401d1de94c8f7ab0283d7c906a1263e6ad7352d9a79caa8a207c41af57fadc"],
+            toastText: "",
+            toastShow: false,
+            did: "",
+            ncObj: {},
+
+        },
+        methods: {
+            getUrl() {
+                //获取当前网址，
+                var curPath = window.document.location.href;
+                //获取主机地址之后的目录，
+                var pathName = window.document.location.pathname;
+                var pos = curPath.indexOf(pathName);
+                //获取主机地址
+                var localhostPaht = curPath.substring(0, pos);
+                return localhostPaht;
+            },
+            saveNc() {
+                localStorage.setItem('ELA-Multi-sig-Wallet-nickName', JSON.stringify(this.ncObj));
+            },
+            getUrlParam: function(name) {
+                //正则表达式过滤
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                //正则规则
+                var r = window.location.search.substr(1).match(reg);
+
+                if (r != null) return decodeURI(r[2]);
+                return null;
+            },
+            buildIdentity() {
+                var baseUrl = this.getUrl();
+                this.schemeConfig1['ReturnUrl'] = baseUrl + '/createWallet.html?publicArr=' + JSON.stringify(this.publickeyArr) + "&name=" + this.walletName;
+                var url = "elaphant://identity?";
+                _.forEach(this.schemeConfig1, function(val, key, index) {
+                    if (key === 'ReturnUrl' || key === 'RequestInfo') {
+                        val = encodeURIComponent(val);
+                    }
+                    url += key + '=' + val + '&';
+                });
+
+                return url.substring(0, url.length - 1);
+            },
+            invite() {
+                var url = this.buildIdentity();
+                var turl = 'https://launch.elaphant.app?appName=ELA Multi-sig Wallet&autoRedirect=True&appTitle=ELA Multi-sig Wallet&redirectURL=' + encodeURIComponent(url);
+                this.doCopy(turl);
+            },
+            buildMultiCreate() {
+                var url = "elaphant://multicreate?";
+                var that = this;
+                _.forEach(this.schemeConfig, function(val, key, index) {
+                    if (key === 'ReturnUrl') {
+                        val = encodeURIComponent(val);
+                    } else if (key === 'PublicKeys') {
+                        val = encodeURIComponent(that.publickeyArr.join(","));
+                    }
+                    if (key === 'ReturnUrl') {
+                        url += key + '=' + val;
+                    } else {
+                        url += key + '=' + val + '&';
+                    }
+
+                });
+
+                return url;
+            },
+            jia() {
+                if (this.publickeyArr.length < 2) {
+                    this.schemeConfig['RequiredCount'] = 2;
+                    return;
+                }
+                if (this.schemeConfig['RequiredCount'] === this.publickeyArr.length) {
+                    this.schemeConfig['RequiredCount'] = this.publickeyArr.length;
+                } else {
+                    this.schemeConfig['RequiredCount'] = this.schemeConfig['RequiredCount'] + 1;
+                }
+            },
+            jian() {
+                if (this.schemeConfig['RequiredCount'] === 2) {
+                    this.schemeConfig['RequiredCount'] = 2;
+                } else {
+                    this.schemeConfig['RequiredCount'] = this.schemeConfig['RequiredCount'] - 1;
+                }
+            },
+            addPublicKey() {
+                if (this.spublic === "") {
+                    this.toast(this.curLangule['error1']);
+                    return;
+                }
+                if (this.publickeyArr.indexOf(this.spublic) > -1) {
+                    this.toast(this.curLangule['error2']);
+                    return;
+                }
+
+                this.publickeyArr.push(this.spublic);
+                this.number = this.publickeyArr.length;
+                if (this.publickeyArr.length > 2) {
+                    this.schemeConfig['RequiredCount'] = this.publickeyArr.length - 1;
+                } else {
+                    this.schemeConfig['RequiredCount'] = 2;
+                }
+                this.spublic = "";
+            },
+            create() {
+                if (this.checkParms()) {
+                    var publicKeys = this.publickeyArr.join(",");
+                    var extraParm = 'name=' + this.walletName + '&' + 'requiredCount=' + this.schemeConfig['RequiredCount'] + '&' + 'PublicKeys=' + publicKeys;
+                    var baseUrl = this.getUrl();
+                    this.schemeConfig['ReturnUrl'] = baseUrl + '/walletDetails.html?' + extraParm;
+                    var url = this.buildMultiCreate();
+                    var turl = 'https://launch.elaphant.app?appName=ELA Multi-sig Wallet&autoRedirect=True&appTitle=ELA Multi-sig Wallet&redirectURL=' + encodeURIComponent(url);
+                    location.href = turl;
+                }
+            },
+            doCopy(publickey) {
+                var v = this;
+                this.$copyText(publickey).then(function(e) {
+                    v.toast(v.curLangule['key6']);
+                }, function(e) {})
+            },
+            toast(str) {
+                var v = this;
+                v.toastText = str
+                v.toastShow = true
+                setTimeout(function() {
+                    v.toastShow = false
+                }, 1500)
+            },
+            getLen2(str) {　　　　 //将中文替换成两个英文字符来统计
+                return str.replace(/[^\x00-\xff]/g, "aa").length;
+            },
+            checkParms() {
+                if (this.walletName === "") {
+                    this.toast(this.curLangule['error0']);
+                    return false;
+                }
+
+                if (this.getLen2(this.walletName) > 30) {
+                    this.toast(this.curLangule['error4']);
+                    return false;
+                }
+
+                if (this.publickeyArr.indexOf("") > -1) {
+                    this.toast(this.curLangule['key2']);
+                    return false;
+                }
+
+                if (this.publickeyArr.length < 2) {
+                    this.toast(this.curLangule['key2']);
+                    return false;
+                }
+
+                return true;
+            },
+            getLanugle: function() {
+                this.curLangule = this.en;
+                this.curLanguleKey = 'en';
+                var JsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+                if (JsSrc.indexOf('zh') >= 0) {
+                    // 假如浏览器语言是中文
+                    this.curLanguleKey = 'zh';
+                    this.curLangule = this.zh;
+                } else if (JsSrc.indexOf('en') >= 0) {
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                } else {
+                    // 假如浏览器语言是其它语言
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                }
+            },
+            back() {
+                location.href = "./index.html";
+            }
+        },
+        created: function() {
+            var nc = localStorage.getItem('ELA-Multi-sig-Wallet-nickName') || "";
+            if (nc != "") {
+                this.ncObj = JSON.parse(nc);
+            }
+        },
+        mounted() {
+            var publicStr = this.getUrlParam("publicArr") || "";
+            var name = this.getUrlParam("name") || "";
+            if (publicStr != "") {
+                this.publickeyArr = JSON.parse(publicStr);
+            } else {
+                this.publickeyArr = [];
+                //this.publickeyArr = ["02850ff33b13e6671df7ca599ef41976eb432f143f714027531bacc7fa4c8b324b"];
+            }
+
+            if (name != "") {
+                this.walletName = name;
+            }
+
+            var item = this.getUrlParam("Data") || "";
+            if (item != "") {
+                var mdata = decodeURIComponent(item);
+                var json = JSON.parse(mdata);
+                var publicKey = json.PublicKey;
+                this.did = json.DID;
+                if (this.publickeyArr.indexOf(publicKey) === -1) {
+                    this.publickeyArr.push(publicKey);
+                }
+                var nickName = json.Nickname;
+                //this.ncObj = {};
+                this.ncObj[publicKey] = nickName;
+                localStorage.setItem('ELA-Multi-sig-Wallet-nickName', JSON.stringify(this.ncObj));
+            }
+            this.getLanugle();
+            document.title = this.curLangule["title"];
+            this.number = this.publickeyArr.length;
+            if (this.publickeyArr.length > 2) {
+                this.schemeConfig['RequiredCount'] = this.publickeyArr.length - 1;
+            } else {
+                this.schemeConfig['RequiredCount'] = 2;
+            }
+        }
+    });
+</script>
+
+</html>

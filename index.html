@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+</head>
+<style type="text/css">
+    body {
+        background: #F2F9FF;
+    }
+    
+    .top {
+        position: fixed;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        left: 0px;
+        top: 0px;
+        background: #0070C8;
+    }
+    
+    .top p {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 40px;
+        color: #FFFFFF;
+    }
+    
+    .top p img {
+        vertical-align: middle;
+        margin-top: -3px;
+        margin-right: 10px;
+    }
+    
+    .container .hang {
+        margin-top: 20px;
+        height: 64px;
+        /* line-height: 64px; */
+        background: #FFFFFF;
+        border-top: 1px solid #BDDBFF;
+        border-left: 15px solid #BDDBFF;
+        border-right: 1px solid #BDDBFF;
+        border-bottom: 1px solid #BDDBFF;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+    
+    .send {
+        display: inline-block;
+        width: 64px;
+        height: 32px;
+        line-height: 32px;
+        margin-right: 10px;
+        border: 1px solid #24CF94;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: #24CF94;
+    }
+    
+    .receive {
+        display: inline-block;
+        width: 64px;
+        height: 32px;
+        line-height: 32px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: #FF5D71;
+        border: 1px solid #FF5D71;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+    
+    .open {
+        display: inline-block;
+        width: 64px;
+        height: 32px;
+        line-height: 32px;
+        margin-left: 10px;
+        border: 1px solid #A3C8F4;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        color: #4F92D0;
+    }
+    
+    .xiaoshuo {
+        cursor: pointer;
+    }
+    
+    .create {
+        margin-top: 30px;
+        float: right;
+    }
+    
+    .create p {
+        width: 232px;
+        height: 64px;
+        line-height: 64px;
+        background: #0070C8;
+        border: 1px solid #BDDBFF;
+        box-sizing: border-box;
+        border-radius: 5px;
+        text-align: center;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 16px;
+        color: #FFFFFF;
+    }
+    
+    .xiaoshuo {
+        cursor: pointer;
+    }
+    
+    .dialog {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        z-index: 999;
+    }
+    
+    .arrow_mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 998;
+        display: block;
+        background: black;
+        opacity: 0.3;
+        box-shadow: 0px 4px 10px rgba(95, 111, 237, 0.2);
+    }
+    
+    .kuang {
+        position: absolute;
+        width: 500px;
+        height: 160px;
+        left: 50%;
+        top: 50%;
+        margin-left: -250px;
+        margin-top: -80px;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 10px rgba(106, 147, 205, 0.1);
+        border-radius: 5px;
+        z-index: 999;
+    }
+    
+    .kuang .title {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 18px;
+    }
+    
+    .kuang .content {
+        padding: 10px;
+        height: 65px;
+        overflow: auto;
+        line-height: 25px;
+        font-size: 16px;
+        word-wrap: break-word;
+        word-break: normal;
+        white-space: normal;
+    }
+    
+    .kuang .footer {
+        position: relative;
+    }
+    
+    .kuang .footer .left-btn {
+        position: absolute;
+        width: 120px;
+        height: 40px;
+        left: 10px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 16px;
+        display: inline-block;
+        background-color: #0070C8;
+        color: #ffffff;
+    }
+    
+    .kuang .footer .right-btn {
+        position: absolute;
+        width: 120px;
+        height: 40px;
+        right: 10px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 16px;
+        display: inline-block;
+        background-color: #0070C8;
+        color: #ffffff;
+    }
+    
+    .toast {
+        position: fixed;
+        z-index: 2000;
+        left: 50%;
+        top: 25%;
+        transition: all .5s;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        text-align: center;
+        border-radius: 5px;
+        color: #FFF;
+        background: rgba(17, 17, 17, 0.7);
+        height: 45px;
+        line-height: 45px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: url(./images/mpc_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        z-index: -1;
+    }
+    
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="toast" v-show="toastShow">
+            {{toastText}}
+        </div>
+        <div class="bg"></div>
+        <div class="top">
+            <p>
+                {{curLangule["title"]}}
+            </p>
+        </div>
+        <div style="margin-top:80px"></div>
+        <div style="text-align: center;margin-top: 110px;font-size: 18px" v-if="walletList==''">
+            {{curLangule["key4"]}}
+        </div>
+        <div class="container">
+            <div class="row hang center-vertical" v-for="(item,index) in walletList">
+                <div class="col-xs-2 text-center xiaoshuo" style="margin-top:23px"><input style="border:0;cursor: pointer;padding-left:5px;width: 90%" :placeholder='curLangule["error0"]' v-model="item.name" /></div>
+                <div class="col-xs-2 " style="margin-top:23px"> {{balanceObj[item['Address']]}} ELA</div>
+                <div class="col-xs-3 text-center" style="margin-top:23px">{{dateFormat(new Date(item.createTime*1000),'yyyy-MM-dd')}}</div>
+                <div class="col-xs-1 text-center" style="margin-top:23px">{{item.requiredCount}}-{{item.totalPublic}}</div>
+                <div class="col-xs-4 text-center" style="margin-top:16px">
+                    <span class="send xiaoshuo" @click="send(item.Address)">{{curLangule["key"]}}</span>
+                    <span class="receive xiaoshuo" @click="receive(item.Address)">{{curLangule["key1"]}}</span>
+                    <span class="open xiaoshuo" @click="open(item.Address)">{{curLangule["key2"]}}</span>
+                </div>
+            </div>
+
+            <div class="create row xiaoshuo" @click="create()">
+                <p>+ {{curLangule["key3"]}}</p>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            zh: {
+                title: 'Elastos 多签钱包',
+                key: '发送',
+                key1: '接收',
+                key2: '打开',
+                key3: '创建钱包',
+                key4: '你可以创建新钱包啦',
+                key45: "确认框",
+                key46: "取消",
+                key47: "确认",
+                error0: '请输入钱包名字',
+                error4: '钱包名字不能超过30字符',
+            },
+            en: {
+                title: 'Elastos Multi Sign Wallet',
+                key: 'Send',
+                key1: 'Receive',
+                key2: 'Open',
+                key3: 'Create a new wallet',
+                key4: 'You can create a new wallet',
+                key45: "Confirm",
+                key46: "Cancel",
+                key47: "Confirm",
+                error0: 'Please enter the name of your wallet',
+                error4: "Wallet name can't be more than 30 characters",
+            },
+            curLangule: {},
+            walletList: {},
+            schemeConfig: {
+                "AppID": "f4d54cd97afa828a9705e38eb679fad564cf3adf4cecd1a5503498155969b07baaa4c4a016084c0f21e06c59e76c33929925052d7d0ae3cfc679a0fdf48ec23f",
+                "AppName": encodeURIComponent("ELA Multi-sig Wallet"),
+                "DID": "ipFFpL1JwPRQKfhmxak8r1wWEbdkJ3rXZu",
+                "PublicKey": "035731ff69f8cfdcd9881e573143d71de2390b2e8e71fa14729e6b506f5d74939d",
+                "RandomNumber": "123456789",
+                "ReturnUrl": "",
+                "RequestInfo": "Nickname"
+            },
+            showMask: false,
+            walletName: "",
+            address: "",
+            toastText: "",
+            toastShow: false,
+            balanceObj: {},
+            name: "",
+        },
+        methods: {
+            getUrl() {
+                //获取当前网址，
+                var curPath = window.document.location.href;
+                //获取主机地址之后的目录，
+                var pathName = window.document.location.pathname;
+                var pos = curPath.indexOf(pathName);
+                //获取主机地址
+                var localhostPaht = curPath.substring(0, pos);
+                return localhostPaht;
+            },
+            getLen2(str) {　　　　 //将中文替换成两个英文字符来统计
+                return str.replace(/[^\x00-\xff]/g, "aa").length;
+            },
+            toast(str) {
+                var v = this;
+                v.toastText = str
+                v.toastShow = true
+                setTimeout(function() {
+                    v.toastShow = false;
+                }, 1500)
+            },
+            clickName(item) {
+                this.walletName = item["name"];
+                this.address = item["Address"];
+                //this.showMask = true;
+            },
+            click_ok(item) {
+                this.address = item["Address"];
+                if (item.name === "") {
+                    this.toast(this.curLangule["error0"]);
+                    setTimeout(() => {
+                        if (this.walletName === "") {
+                            this.walletList[this.address].name = "ela";
+                        } else {
+                            this.walletList[this.address].name = this.walletName;
+                        }
+
+                    }, 3500);
+                    return false;
+                }
+
+                if (this.getLen2(item.name) > 30) {
+                    this.toast(this.curLangule['error4']);
+                    setTimeout(() => {
+                        if (this.walletName === "") {
+                            this.walletList[this.address].name = "ela";
+                            localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(this.walletList));
+                        } else {
+                            this.walletList[this.address].name = this.walletName;
+                            localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(this.walletList));
+                        }
+                    }, 3500);
+                    return false;
+                }
+                this.walletName = item["name"];
+                this.walletList[this.address].name = this.walletName;
+                localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(this.walletList));
+                this.showMask = false;
+            },
+            click_close() {
+                this.showMask = false;
+            },
+            buildIdentity() {
+                var baseUrl = this.getUrl();
+                this.schemeConfig['ReturnUrl'] = baseUrl + '/createWallet.html';
+                var url = "elaphant://identity?";
+                _.forEach(this.schemeConfig, function(val, key, index) {
+                    if (key === 'ReturnUrl' || key === 'RequestInfo') {
+                        val = encodeURIComponent(val);
+                    }
+                    url += key + '=' + val + '&';
+                });
+
+                return url.substring(0, url.length - 1);
+            },
+            getLanugle: function() {
+                this.curLangule = this.en;
+                this.curLanguleKey = 'en';
+                var JsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+                if (JsSrc.indexOf('zh') >= 0) {
+                    // 假如浏览器语言是中文
+                    this.curLanguleKey = 'zh';
+                    this.curLangule = this.zh;
+                } else if (JsSrc.indexOf('en') >= 0) {
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                } else {
+                    // 假如浏览器语言是其它语言
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                }
+            },
+            dateFormat(date, sFormat) {
+                let time = {
+                    Year: 0,
+                    TYear: '0',
+                    Month: 0,
+                    TMonth: '0',
+                    Day: 0,
+                    TDay: '0',
+                    Hour: 0,
+                    THour: '0',
+                    hour: 0,
+                    Thour: '0',
+                    Minute: 0,
+                    TMinute: '0',
+                    Second: 0,
+                    TSecond: '0',
+                    Millisecond: 0
+                };
+                time.Year = date.getFullYear();
+                time.TYear = String(time.Year).substr(2);
+                time.Month = date.getMonth() + 1;
+                time.TMonth = time.Month < 10 ? "0" + time.Month : String(time.Month);
+                time.Day = date.getDate();
+                time.TDay = time.Day < 10 ? "0" + time.Day : String(time.Day);
+                time.Hour = date.getHours();
+                time.THour = time.Hour < 10 ? "0" + time.Hour : String(time.Hour);
+                time.hour = time.Hour < 13 ? time.Hour : time.Hour - 12;
+                time.Thour = time.hour < 10 ? "0" + time.hour : String(time.hour);
+                time.Minute = date.getMinutes();
+                time.TMinute = time.Minute < 10 ? "0" + time.Minute : String(time.Minute);
+                time.Second = date.getSeconds();
+                time.TSecond = time.Second < 10 ? "0" + time.Second : String(time.Second);
+                time.Millisecond = date.getMilliseconds();
+
+                return sFormat.replace(/yyyy/ig, String(time.Year))
+                    .replace(/yyy/ig, String(time.Year))
+                    .replace(/yy/ig, time.TYear)
+                    .replace(/y/ig, time.TYear)
+                    .replace(/MM/g, time.TMonth)
+                    .replace(/M/g, String(time.Month))
+                    .replace(/dd/ig, time.TDay)
+                    .replace(/d/ig, String(time.Day))
+                    .replace(/HH/g, time.THour)
+                    .replace(/H/g, String(time.Hour))
+                    .replace(/hh/g, time.Thour)
+                    .replace(/h/g, String(time.hour))
+                    .replace(/mm/g, time.TMinute)
+                    .replace(/m/g, String(time.Minute))
+                    .replace(/ss/ig, time.TSecond)
+                    .replace(/s/ig, String(time.Second))
+                    .replace(/fff/ig, String(time.Millisecond))
+            },
+            receive(address) {
+                location.href = "./receive.html?address=" + address;
+            },
+            send(address) {
+                location.href = "./send.html?address=" + address;
+            },
+            open(address) {
+                location.href = "./walletDetails.html?address=" + address;
+            },
+            create() {
+                var url = this.buildIdentity();
+                var turl = 'https://launch.elaphant.app?appName=ELA Multi-sig Wallet&autoRedirect=True&appTitle=ELA Multi-sig Wallet&redirectURL=' + encodeURIComponent(url);
+                location.href = turl;
+            },
+            getBalance(address) {
+                return new Promise((resovle, reject) => {
+                    $.ajax({
+                        url: 'https://node1.elaphant.app/api/1/balance/' + address,
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: 'GET',
+                        success: function(data) { //成功回调函数
+                            resovle(data);
+                        },
+                        error: function(err) { //失败回调函数
+                            reject(err);
+                        }
+                    });
+                })
+            }
+        },
+        created: function() {
+
+            var walletList = localStorage.getItem('ELA-Multi-sig-Wallet') || "";
+            if (walletList === "") {
+                this.walletList = "";
+            } else {
+                this.walletList = JSON.parse(walletList);
+                for (let key in this.walletList) {
+                    this.getBalance(key).then((res) => {
+                        if (res.status === 200) {
+                            this.$set(this.balanceObj, key, res.result);
+                        }
+                    });
+                }
+
+
+            }
+        },
+        mounted() {
+            this.getLanugle();
+            document.title = this.curLangule["title"];
+        }
+    });
+</script>
+
+</html>

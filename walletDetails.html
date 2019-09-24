@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vue-clipboard.min.js"></script>
+    <script src="./js/minirefresh.min.js"></script>
+    <script src="./js/vue-qrcode.min.js"></script>
+    <script>
+        Vue.component(VueQrcode.name, VueQrcode);
+    </script>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+</head>
+<style type="text/css">
+    .fl {
+        float: left;
+    }
+    
+    .fr {
+        float: right;
+    }
+    
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    /* HTML5 display-role reset for older browsers */
+    
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+        display: block;
+    }
+    
+    ol,
+    ul {
+        list-style: none;
+    }
+    
+    blockquote,
+    q {
+        quotes: none;
+    }
+    
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
+    
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    /* add */
+    
+    body {
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, "微软雅黑";
+        background: #F2F9FF;
+    }
+    
+    html {
+        /* height: 100%; */
+        background: #F2F9FF;
+    }
+    
+    img {
+        border: 0
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-size: 100%;
+        font-weight: normal;
+    }
+    
+    select,
+    input {
+        vertical-align: middle
+    }
+    
+    .clear {
+        display: block !important;
+        clear: both !important;
+        float: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0;
+        line-height: 0;
+        font-size: 0;
+        overflow: hidden;
+    }
+    
+    .clearfix {
+        zoom: 1;
+    }
+    
+    .clearfix:after {
+        content: "";
+        display: block;
+        clear: both;
+        height: 0;
+    }
+    
+    .spacer {
+        clear: both;
+        font-size: 0;
+        height: 0;
+        line-height: 0;
+    }
+    
+    a {
+        color: #333;
+        text-decoration: none
+    }
+    
+    a:hover {
+        color: #f00;
+    }
+    
+    img,
+    input,
+    label {
+        vertical-align: middle;
+    }
+    
+    #app {
+        position: relative;
+        padding: 15px 10px;
+    }
+    
+    .first {
+        position: relative;
+        height: 93px;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 10px rgba(106, 147, 205, 0.1);
+        border-radius: 5px;
+        margin: 10px;
+    }
+    
+    .first .shu {
+        position: absolute;
+        width: 8px;
+        height: 93px;
+        left: 0px;
+        top: 0px;
+        background: #C3C8CA;
+        border-radius: 5px;
+    }
+    
+    .first .shu1 {
+        position: absolute;
+        width: 8px;
+        height: 93px;
+        left: 0px;
+        top: 0px;
+        background: #24CF94;
+        border-radius: 5px;
+    }
+    
+    .first .shu2 {
+        position: absolute;
+        width: 8px;
+        height: 93px;
+        left: 0px;
+        top: 0px;
+        background: #FF4041;
+        border-radius: 5px;
+    }
+    
+    .first .kuang {
+        position: relative;
+        line-height: 46.5px;
+        height: 46.5px;
+        margin: 0px 20px;
+        border-bottom: 0.5px solid #BCBCBC;
+    }
+    
+    .first .kuang .price {
+        position: absolute;
+        /* width: 59px; */
+        height: 20px;
+        right: 0px;
+        top: 5px;
+        font-family: Bio Sans;
+        font-size: 16px;
+        line-height: 20px;
+        /* identical to box height */
+        display: flex;
+        align-items: center;
+        text-align: right;
+        color: #0070C8;
+    }
+    
+    .first .kuang .status {
+        position: absolute;
+        /* width: 50px; */
+        height: 15px;
+        right: 5px;
+        top: 28px;
+        font-family: Bio Sans;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+        display: flex;
+        align-items: center;
+        text-align: right;
+        color: #24CF94;
+    }
+    
+    .first .kuang span {
+        display: inline-block;
+    }
+    
+    .first .kuang1 {
+        margin: 10px 20px;
+    }
+    
+    .spinner {
+        display: block;
+        margin: 100px auto 0;
+        width: 150px;
+        text-align: center;
+    }
+    
+    .spinner>div {
+        width: 30px;
+        height: 30px;
+        background-color: #67CF22;
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+        animation: bouncedelay 1.4s infinite ease-in-out;
+        /* Prevent first frame from flickering when animation starts */
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+    
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+    
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+    
+    @-webkit-keyframes bouncedelay {
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0.0)
+        }
+        40% {
+            -webkit-transform: scale(1.0)
+        }
+    }
+    
+    @keyframes bouncedelay {
+        0%,
+        80%,
+        100% {
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        }
+        40% {
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
+    }
+    
+    .minirefresh-wrap {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        z-index: 1
+    }
+    
+    .minirefresh-scroll {
+        position: relative;
+        background: #F2F9FF;
+    }
+    
+    .body-scroll-wrap {
+        position: relative
+    }
+    
+    .minirefresh-hardware-speedup {
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+    
+    .minirefresh-hidden {
+        display: none!important
+    }
+    
+    .minirefresh-wrap::-webkit-scrollbar-track {
+        background-color: transparent
+    }
+    
+    .minirefresh-wrap::-webkit-scrollbar {
+        width: 6px
+    }
+    
+    .minirefresh-hide-scrollbar::-webkit-scrollbar {
+        width: 0
+    }
+    
+    .minirefresh-wrap::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background-color: #ccc
+    }
+    
+    .minirefresh-wrap::-webkit-scrollbar-thumb:hover {
+        background-color: #aaa
+    }
+    
+    .minirefresh-rotate {
+        -webkit-animation: minirefresh-rotate .6s linear infinite;
+        animation: minirefresh-rotate .6s linear infinite
+    }
+    
+    .minirefresh-fade-in {
+        -webkit-animation: minirefresh-fade-in .5s linear forwards;
+        animation: minirefresh-fade-in .5s linear forwards
+    }
+    
+    .minirefresh-fade-out {
+        pointer-events: none;
+        -webkit-animation: minirefresh-fade-out .5s linear forwards;
+        animation: minirefresh-fade-out .5s linear forwards
+    }
+    
+    .minirefresh-totop {
+        position: fixed;
+        z-index: 9990;
+        right: 10px;
+        bottom: 30px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAclBMVEUAAAAAAAAAAAAAAADp6ekAAAAAAAAAAADOzs4AAAAAAAAAAAAAAAAAAAAAAAAAAADo6OjW1tYeHh7l5eXh4eHY2NjAwMC5ubm3t7cxMTH7+/vv7+/s7Ozc3NzNzc2tra0TExPp6enS0tLQ0NDDw8P///9ezvBLAAAAJXRSTlNNAAod1T46NbASSEc0Kykk07pTzsm9o52ZWfXg2sGvk1HUtbOmfFE0sAAAAT1JREFUSMeV1t1ygjAQhuGvu4ZU+VUUqVrtX+7/FpuCTJEsmH2POMgzMEzYgBdlISAurEmB1NiC6RkgzjYYtcmYFgCVBkGmpDnACcQSFgHlmC2nEKwtFrLrKVgnWCwZBKT1shgDsniapRHIEVH+DxhR8QAoiQMJ3UGJyMoekIkFhjrAiI47kGHU2U06Y1T2B+hhP7evfdfr/aJ92O3kAUMRe1BA6K3e7yBUeGCl9ZVz7x8Isx4Ycf3pJArjQYppu9rd6qpxhxCkHoTr9+6Gzwo/bhsKD4T1LbBaAUdBCI90cEf0wIsv4ZHMFDQYAJrpLYz8Wgcgv9ZCAwoPWAO423zxYEPd9o4HWf8BxQPuAJlYYGh+CFwuCCsXxsz2Wxoz2kGmHZXqYawe9/oDRX9k6Q9F/bGrP9j1vw76nxNlv9R2ECcaFzswAAAAAElFTkSuQmCC');
+        background-size: 100% 100%
+    }
+    
+    @-moz-keyframes minirefresh-fade-in {
+        0% {
+            opacity: 0
+        }
+        100% {
+            opacity: 1
+        }
+    }
+    
+    @-webkit-keyframes minirefresh-fade-in {
+        0% {
+            opacity: 0
+        }
+        100% {
+            opacity: 1
+        }
+    }
+    
+    @-o-keyframes minirefresh-fade-in {
+        0% {
+            opacity: 0
+        }
+        100% {
+            opacity: 1
+        }
+    }
+    
+    @keyframes minirefresh-fade-in {
+        0% {
+            opacity: 0
+        }
+        100% {
+            opacity: 1
+        }
+    }
+    
+    @-moz-keyframes minirefresh-fade-out {
+        0% {
+            opacity: 1
+        }
+        100% {
+            opacity: 0
+        }
+    }
+    
+    @-webkit-keyframes minirefresh-fade-out {
+        0% {
+            opacity: 1
+        }
+        100% {
+            opacity: 0
+        }
+    }
+    
+    @-o-keyframes minirefresh-fade-out {
+        0% {
+            opacity: 1
+        }
+        100% {
+            opacity: 0
+        }
+    }
+    
+    @keyframes minirefresh-fade-out {
+        0% {
+            opacity: 1
+        }
+        100% {
+            opacity: 0
+        }
+    }
+    
+    @-moz-keyframes minirefresh-rotate {
+        0% {
+            -webkit-transform: rotateZ(0);
+            transform: rotateZ(0);
+            -moz-transform: rotate(0)
+        }
+        100% {
+            -webkit-transform: rotateZ(360deg);
+            transform: rotateZ(360deg);
+            -moz-transform: rotate(360deg)
+        }
+    }
+    
+    @-webkit-keyframes minirefresh-rotate {
+        0% {
+            -webkit-transform: rotateZ(0);
+            transform: rotateZ(0);
+            -moz-transform: rotate(0)
+        }
+        100% {
+            -webkit-transform: rotateZ(360deg);
+            transform: rotateZ(360deg);
+            -moz-transform: rotate(360deg)
+        }
+    }
+    
+    @-o-keyframes minirefresh-rotate {
+        0% {
+            -webkit-transform: rotateZ(0);
+            transform: rotateZ(0);
+            -moz-transform: rotate(0)
+        }
+        100% {
+            -webkit-transform: rotateZ(360deg);
+            transform: rotateZ(360deg);
+            -moz-transform: rotate(360deg)
+        }
+    }
+    
+    @keyframes minirefresh-rotate {
+        0% {
+            -webkit-transform: rotateZ(0);
+            transform: rotateZ(0);
+            -moz-transform: rotate(0)
+        }
+        100% {
+            -webkit-transform: rotateZ(360deg);
+            transform: rotateZ(360deg);
+            -moz-transform: rotate(360deg)
+        }
+    }
+    
+    .minirefresh-theme-default .minirefresh-downwrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 75px
+    }
+    
+    .minirefresh-theme-default .minirefresh-upwrap {
+        min-height: 30px;
+        padding: 15px 0;
+        text-align: center;
+        background-color: #e5e5e5;
+    }
+    
+    .minirefresh-theme-default .downwrap-content {
+        width: 100%;
+        padding: 10px 0;
+        text-align: center
+    }
+    
+    .minirefresh-theme-default .minirefresh-downwrap .downwrap-progress,
+    .minirefresh-theme-default .minirefresh-upwrap .upwrap-progress {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1px solid grey;
+        margin-right: 8px;
+        border-bottom-color: transparent;
+        vertical-align: middle
+    }
+    
+    .minirefresh-theme-default .minirefresh-downwrap .downwrap-error,
+    .minirefresh-theme-default .minirefresh-downwrap .downwrap-success {
+        display: none
+    }
+    
+    .minirefresh-theme-default .minirefresh-downwrap .downwrap-tips,
+    .minirefresh-theme-default .minirefresh-upwrap .upwrap-tips {
+        display: inline-block;
+        font-size: 12px;
+        color: grey;
+        vertical-align: middle
+    }
+    
+    .minirefresh-theme-default .status-nomore .upwrap-tips {
+        padding: 15px 0
+    }
+    
+    ** * showcase通用样式 */ * {
+        -webkit-user-select: none;
+    }
+    /*
+ * 需要定制位置
+ */
+    
+    .minirefresh-wrap {
+        top: 100px;
+        left: 30%;
+    }
+    
+    .data-list {
+        position: relative;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-left: 0;
+        list-style: none;
+        /* background-color: #E5E5E5; */
+        background-color: #FFFFFF;
+    }
+    
+    .list-item {
+        position: relative;
+        overflow: hidden;
+        padding: 11px 15px;
+        -webkit-touch-callout: none;
+    }
+    
+    .list-item:after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 15px;
+        height: 1px;
+        content: '';
+        -webkit-transform: scaleY(.5);
+        transform: scaleY(.5);
+        background-color: #c8c7cc;
+    }
+    
+    .list-item:active {
+        background: #F5F5F5;
+    }
+    
+    .msg-title {
+        display: block;
+        font-size: 15px;
+        margin: 5px;
+    }
+    
+    .msg-fs14 {
+        font-size: 14px;
+        color: #999;
+    }
+    
+    .msg-date {
+        float: right;
+        margin: 5px;
+    }
+    
+    .list-item a,
+    .navbar-header a {
+        text-decoration: none;
+        color: #18B4FE;
+    }
+    
+    .nav-tips {
+        font-size: 14px;
+        padding: 12px;
+        border-bottom: 1px solid #c8c7cc;
+        color: red;
+    }
+    
+    .navbar-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        border-bottom: 1px solid #c8c7cc;
+        background-color: #FFFFFF;
+        z-index: 999;
+    }
+    
+    .nav-control {
+        position: fixed;
+        top: 45px;
+        left: 0;
+        width: 100%;
+        height: 44px;
+        line-height: 17px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        /**
+     * 防止点击时闪动
+     */
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .nav-control .active {
+        border-bottom: 1px solid #FF6990;
+        color: #FF6990;
+    }
+    
+    .nav-control p {
+        display: inline-block;
+        width: 32%;
+        padding: 5px 0;
+    }
+    
+    .nav-btn-left {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 12px;
+        line-height: 22px;
+    }
+    
+    .content {
+        /*    padding-top: 45px;*/
+    }
+    
+    .notice {
+        padding: 5px;
+        text-align: center;
+    }
+    
+    .btn-switch {
+        display: inline-block;
+        margin-top: 14px;
+        font-size: 14px;
+        padding: 3px 15px;
+        text-align: center;
+        border: 1px solid #FF6990;
+        border-radius: 20px;
+        color: #FF6990;
+    }
+    
+    .memo {
+        position: absolute;
+        left: 0px;
+        top: 13px;
+        font-size: 12px;
+        color: #999999;
+    }
+    
+    .address {
+        /* position: absolute;
+        left: 0px;
+        top: -7px; */
+        word-wrap: break-word;
+    }
+    
+    .dialog {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        z-index: 999;
+    }
+    
+    .arrow_mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 998;
+        display: block;
+        background: black;
+        opacity: 0.3;
+        box-shadow: 0px 4px 10px rgba(95, 111, 237, 0.2);
+    }
+    
+    .kuang2 {
+        position: absolute;
+        width: 500px;
+        /* height: 400px; */
+        left: 50%;
+        top: 50%;
+        margin-left: -250px;
+        margin-top: -200px;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 10px rgba(106, 147, 205, 0.1);
+        border-radius: 5px;
+        z-index: 999;
+    }
+    
+    .close {
+        position: relative;
+        height: 15px;
+    }
+    
+    .close img {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        right: 0px;
+        top: 0px;
+        padding: 5px;
+    }
+    
+    .kuang2 .leixing {
+        font-family: Bio Sans;
+        font-size: 16px;
+        color: #FF4041;
+        text-align: center;
+    }
+    
+    .kuang2 .price {
+        margin-top: 8px;
+        font-family: Bio Sans;
+        font-size: 28px;
+        text-align: center;
+        color: #222222;
+    }
+    
+    .kuang2 .line {
+        margin-top: 20px;
+        width: 100%;
+        height: 1px;
+        background-color: #C4C4C4;
+    }
+    
+    .kuang2 .hang1 {
+        width: 441px;
+        height: 40px;
+        line-height: 40px;
+        margin: 0 auto;
+        border-bottom: 1px solid #C4C4C4;
+    }
+    
+    .kuang2 .hang1 .shuoming {
+        font-family: Bio Sans;
+        font-size: 12px;
+        color: #888888;
+    }
+    
+    .kuang2 .hang1 img {
+        width: 10px;
+        height: 10px;
+        margin-right: 2px;
+    }
+    
+    .kuang2 .hang1 .content {
+        position: absolute;
+        display: inline-block;
+        right: 16px;
+        font-family: Bio Sans;
+        font-size: 14px;
+        text-align: right;
+        color: #222222;
+    }
+    
+    .kuang2 .hang2 {
+        position: relative;
+        padding: 10px 0px;
+        width: 441px;
+        height: 40px;
+        margin: 0 auto;
+        border-bottom: 1px solid #C4C4C4;
+    }
+    
+    .kuang2 .hang2 .shuoming {
+        /* padding: 10 0px; */
+        width: 200px;
+        float: left;
+        font-family: Bio Sans;
+        font-size: 12px;
+        color: #888888;
+    }
+    
+    .kuang2 .hang2 .content {
+        margin-top: -7px;
+        width: 300px;
+        height: 40px;
+        font-family: Bio Sans;
+        font-size: 14px;
+        text-align: left;
+        color: #222222;
+        overflow: auto;
+    }
+    
+    .btn {
+        height: 80px;
+        line-height: 80px;
+        font-family: Bio Sans;
+        font-size: 16px;
+        text-align: center;
+        color: #0070C8;
+    }
+    
+    .toast {
+        position: fixed;
+        z-index: 2000;
+        left: 50%;
+        top: 25%;
+        transition: all .5s;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        text-align: center;
+        border-radius: 5px;
+        color: #FFF;
+        background: rgba(17, 17, 17, 0.7);
+        height: 45px;
+        line-height: 45px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    .top {
+        position: fixed;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        left: 0px;
+        top: 0px;
+        background: #0070C8;
+        z-index: 99999;
+    }
+    
+    .top p {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 40px;
+        color: #FFFFFF;
+    }
+    
+    .top p img {
+        vertical-align: middle;
+        margin-top: -3px;
+        margin-right: 10px;
+    }
+    
+    .dialog {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        z-index: 999;
+    }
+    
+    .arrow_mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 998;
+        display: block;
+        background: black;
+        opacity: 0.3;
+        box-shadow: 0px 4px 10px rgba(95, 111, 237, 0.2);
+    }
+    
+    .kuang {
+        position: absolute;
+        width: 400px;
+        height: 160px;
+        left: 50%;
+        top: 50%;
+        margin-left: -200px;
+        margin-top: -80px;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 10px rgba(106, 147, 205, 0.1);
+        border-radius: 5px;
+        z-index: 999;
+    }
+    
+    .kuang .title {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 18px;
+    }
+    
+    .kuang .content {
+        padding: 10px;
+        height: 65px;
+        /* overflow: auto; */
+        line-height: 25px;
+        font-size: 16px;
+        word-wrap: break-word;
+        word-break: normal;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    .kuang .footer {
+        position: relative;
+    }
+    
+    .kuang .footer .left-btn {
+        position: absolute;
+        width: 120px;
+        height: 40px;
+        left: 60px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 16px;
+        display: inline-block;
+        background-color: #38f;
+        color: #ffffff;
+    }
+    
+    .kuang .footer .right-btn {
+        position: absolute;
+        width: 120px;
+        height: 40px;
+        right: 60px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 16px;
+        display: inline-block;
+        background-color: #38f;
+        color: #ffffff;
+    }
+    
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: url(./images/mpc_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        z-index: -1;
+    }
+    
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="content" v-cloak>
+        <div class="toast" v-show="toastShow">
+            {{toastText}}
+        </div>
+
+        <div class="bg"></div>
+
+        <div class="top" @click="back">
+            <p> <img src="./images/back.png" />{{curLangule["title"]}}</p>
+        </div>
+
+        <div style="margin-top:100px"></div>
+        <div>
+            <div style="width:30%;float: left;">
+                <div style="width: 302px;height: 198px;background: #0070C8;border-radius: 5px;margin: 0 auto">
+                    <div style="width:260px;border-bottom: 1px solid #FFFFFF;margin: 0 auto;height:60px">
+                        <input v-model="wallet['name']" v-on:input="click_ok1(wallet)" style="border: 0;background-color:#0070C8;color:#ffffff;margin-top: 20px;outline: 0;font-size: 14px;width:220px;" /><img src="./images/delete.png" style="margin-top:20px"
+                            @click="delwallet" />
+                    </div>
+                    <div style="margin-top: 10px;"></div>
+                    <div style="width:260px;height: 32px;margin: 0 auto;word-wrap:break-word;  
+                    word-break:break-all;color: #FFFFFF;font-size: 13px;line-height: 20px">
+                        {{wallet['Address']}}
+                    </div>
+                    <div style="position: absolute;left:200px;top:215px">
+                        <qrcode :value="wallet['Address']" :options="{ width:80 }" style="display:block"></qrcode>
+                    </div>
+                    <div style="margin-top: 20px;"></div>
+                    <div style="width:260px;margin: 0 auto">
+                        <span style="display:inline-block;width: 64px;
+                        height: 24px;line-height: 24px;background: #F2F9FF;
+                        border-radius: 5px;text-align: center" v-on:click="doCopy(wallet['Address'])">{{curLangule["key49"]}}</span>
+                    </div>
+                    <div style="margin-top: 15px;"></div>
+                    <div style="width:260px;margin: 0 auto">
+                        <span style="display:inline-block;width: 64px;
+                        height: 24px;line-height: 24px;background: #F2F9FF;
+                        border-radius: 5px;text-align: center" @click="shengcheng1">{{curLangule["key50"]}}</span>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;"></div>
+                <div style="width: 302px;height: 64px;line-height:64px;background: #FFFFFF;border-radius: 5px;margin:0 auto;border-left:10px solid #A3C8F4;border-bottom:1px solid #BDDBFF;border-top:1px solid #BDDBFF;border-right:1px solid #BDDBFF;">
+                    <span style="font-size: 14px;color: #0070C8;margin-left:10px;display:inline-block;width: 190px">{{balance["num"]}} ELA</span>
+                    <span style="width: 64px;
+                    height: 24px;line-height: 24px;background: #24CF94;
+                    border-radius: 5px;display:inline-block;border-radius: 5px;text-align: center;color: #ffffff" @click="send">{{curLangule["key60"]}}</span>
+                </div>
+                <div style="margin-top: 20px;"></div>
+                <div style="width: 302px;height: 148px;background: #FFFFFF;border-radius: 5px;margin:0 auto;border-left:10px solid #A3C8F4;border-bottom:1px solid #BDDBFF;border-top:1px solid #BDDBFF;border-right:1px solid #BDDBFF;">
+                    <div style="padding: 10px 0px;border-bottom: 1px solid #EEEEEE;height:50px">
+                        <span style="font-size: 14px;color: #0070C8;margin-left:10px;display:inline-block;width: 113px">{{curLangule["key51"]}}</span>
+                        <span style="width: 73px;
+                        height: 24px;line-height: 24px;
+                        border-radius: 5px;display:inline-block;border-radius: 5px;text-align:center;color: #0070C8;font-size: 14px;">{{wallet["totalPublic"]}}</span>
+                        <span style="width: 64px;
+                        height: 24px;line-height: 24px;background: #24CF94;
+                        border-radius: 5px;display:inline-block;border-radius: 5px;text-align: center;color: #ffffff" @click="view">{{curLangule["key61"]}}</span>
+                    </div>
+                    <div style="padding: 10px 0px;border-bottom: 1px solid #EEEEEE;height:50px">
+                        <span style="font-size: 14px;color: #222222;margin-left:10px;display:inline-block;width: 190px">{{curLangule["key52"]}}</span>
+                        <span style="width: 64px;
+                            height: 24px;line-height: 24px;
+                            border-radius: 5px;display:inline-block;border-radius: 5px;text-align:right;color: #222222;font-size: 14px;">{{this.wallet['requiredCount']}}</span>
+                    </div>
+                    <div style="margin-top: 10px;"></div>
+                    <span style="font-size: 14px;color: #222222;margin-left:10px;display:inline-block;width: 116px">{{curLangule["key53"]}}</span>
+                    <span style="width: 140px;
+                                    height: 24px;line-height: 24px;
+                                    border-radius: 5px;display:inline-block;border-radius: 5px;text-align:right;color: #222222;font-size: 14px;">{{dateFormat(new Date(wallet.createTime*1000),'yyyy-MM-dd HH:mm:ss')}}</span>
+                </div>
+            </div>
+            <div id="minirefresh" class="minirefresh-wrap" style="width: 70%;float:left;">
+
+                <div class="minirefresh-scroll">
+                    <div class="data-list">
+                        <div class="container" style="width: 100%">
+                            <div class="row" style="height:40px;line-height:40px;border-bottom: 1px solid #DDDDDD;" v-if="listData.length>0">
+                                <div class="col-xs-12" style="font-family: Roboto;
+                                font-size: 20px;
+                                color: #0070C8;">{{curLangule["key54"]}}</div>
+                            </div>
+                            <div class="row" style="height:40px;line-height:40px;border-bottom: 1px solid #DDDDDD;" v-if="listData.length>0">
+                                <div class="col-xs-2">{{curLangule["key55"]}}</div>
+                                <div class="col-xs-2">{{curLangule["key56"]}}</div>
+                                <div class="col-xs-2">{{curLangule["key57"]}}</div>
+                                <div class="col-xs-3">{{curLangule["key37"]}}</div>
+                                <div class="col-xs-1">{{curLangule["key58"]}}</div>
+                                <div class="col-xs-2">{{curLangule["key59"]}}</div>
+                            </div>
+
+                            <div class="row" v-for="(item,index) in listData" style="margin-top:10px;border-bottom: 1px solid #DDDDDD;" v-on:click="click_item(item)">
+                                <div class="col-xs-2">
+                                    <span class="price" v-if="item.Type=='income'" style="color: #1BC48C;">+{{scientificToNumber(div(item.Value,sela))}}</span>
+                                    <span class="price" v-if="item.Type=='spend'" style="color: #FF4041;">-{{scientificToNumber(jisuan(item.Value,item.Fee))}}</span>
+                                </div>
+                                <div class="col-xs-2">
+                                    <!-- <span class="address" v-if="item.Type=='spend'">{{item.Inputs[0]}}</span>
+                                    <span class="address" v-if="item.Type=='income'">{{item.Inputs[0]}}</span> -->
+                                    <span class="address">{{item.Inputs[0]}}</span>
+                                </div>
+                                <div class="col-xs-2">
+                                    <!-- <span class="address" v-if="item.Type=='spend'">{{item.Outputs[0]}}</span>
+                                    <span class="address" v-if="item.Type=='income'">{{item.Outputs[0]}}</span> -->
+                                    <span class="address">{{item.Outputs[0]}}</span>
+                                </div>
+                                <div class="col-xs-3" style="height:40px;overflow: auto">{{handleMemo1(item)}}</div>
+                                <div class="col-xs-1">
+                                    <span class="status" v-if="item.Type=='income'" style="color: #1BC48C;">{{curLangule['Received']}}</span>
+                                    <span class="status" v-if="item.Type=='spend'" style="color: #FF4041;">{{curLangule['Sent']}}</span>
+                                </div>
+                                <div class="col-xs-2">{{dateFormat(new Date(item.CreateTime*1000),'yyyy-MM-dd HH:mm:ss')}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog" v-if="showMask">
+            <div class="arrow_mask" v-on:click="click_close1"></div>
+            <div class="kuang">
+                <div class="title">{{curLangule["key45"]}}</div>
+                <div class="content">{{curLangule["key48"]}}</div>
+                <div class="footer">
+                    <span class="right-btn" v-on:click="click_ok">{{curLangule["key47"]}}</span>
+                    <span class="left-btn" v-on:click="click_close1">{{curLangule["key46"]}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog" v-if="showMask1">
+            <div class="arrow_mask" v-on:click="click_close"></div>
+            <div class="kuang2">
+                <div class="close" v-on:click="click_close">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADLSURBVHgB7ZOxDQIhFIaBhtA5giO4ghs4wo2gJZVYUeoIN4IbuIIjOIIdoQH5TUgu5D295ky83N/c8T/+L/AAIRb9rSRleu/X5dPFGC/OuSc1p/grY0yXUrpaax9tXVEhpdROSnnUWt8AoKCo5ZzPWADJoMwQQl9C9wLftPAKRQ1zsCuKQbaCAWzhtx7XKhZMwd+BEdCv4BaO8RgopMRE+n0rJjk8CloBn2pDkT0uwT0XxD+8es/x+igGd3h9CR241QzgJzxpsWheegEfssESO4AuEAAAAABJRU5ErkJggg=="
+                    /></div>
+                <div class="leixing" v-if="curItem.Type=='spend'">{{curLangule['Sent']}}</div>
+                <div class="leixing" v-if="curItem.Type=='income'" style="color: #24CF94;">{{curLangule['Received']}}</div>
+                <div class="price" v-if="curItem.Type=='spend'">-{{scientificToNumber(jisuan(curItem.Value,curItem.Fee))}} ELA</div>
+                <div class="price" v-if="curItem.Type=='income'">+{{scientificToNumber(div(curItem.Value,sela))}} ELA</div>
+                <div class="line"></div>
+                <div class="hang1">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC6SURBVHgBfZDBDcIwDEW/IwboEHBvxQJlkvaOQDBB2xVAnFs26Z1DO0CRGIEJYmyaIAhVLSWS42fnfxNcLG/nFAsqAI4BiuSpZWuv9/W+0Tq9oe6iQInJoHJIthWtulPOMDVmgzdGoGyyBDwI1LiphZE79QU9H8hQw+Dc9cUKPp1YMcBHNaEQ7I/mSMHeJ/JVDSO5/TPWCsjVdycsDgj1yprMkOzaAA6xSndJPnVrykZzLLqpV2gcBLwAUTZGK1w9+okAAAAASUVORK5CYII="
+                    /><span class="shuoming">{{curLangule["key35"]}}</span>
+                    <span class="content">{{dateFormat(new Date(curItem.CreateTime*1000),'yyyy-MM-dd HH:mm:ss')}}</span>
+                </div>
+                <div class="hang1">
+                    <span class="shuoming" v-if="curItem.Type=='spend'">{{curLangule["key36"]}}</span>
+                    <span class="shuoming" v-if="curItem.Type=='income'">{{curLangule["key43"]}}</span>
+                    <span class="content" v-if="curItem.Type=='spend'" v-on:click="doCopy(curItem.Outputs[0])">{{curItem.Outputs[0]}}</span>
+                    <span class="content" v-if="curItem.Type=='income'" v-on:click="doCopy(curItem.Inputs[0])">{{curItem.Inputs[0]}}</span>
+                </div>
+                <!-- <div class="hang2">
+                    <span class="shuoming">{{curLangule["key37"]}}</span>
+                    <span class="content"> {{ handleMemo1(curItem)}}</span>
+                </div> -->
+                <div class="hang1" v-if="curItem.Type=='spend'">
+                    <span class="shuoming">{{curLangule["key38"]}}</span>
+                    <span class="content">{{scientificToNumber(div(curItem.Fee,sela))}} ELA</span>
+                </div>
+                <div class="hang1" v-if="curItem.Type=='spend'">
+                    <span class="shuoming">{{curLangule["key39"]}}</span>
+                    <span class="content">{{scientificToNumber(div(curItem.Value,sela))}} ELA</span>
+                </div>
+                <div class="hang1">
+                    <span class="shuoming">{{curLangule["key40"]}}</span>
+                    <span class="content">{{curItem.Height}}</span>
+                </div>
+
+                <div class="hang1">
+                    <span class="shuoming">{{curLangule["key41"]}}</span>
+                    <span class="content" style="font-size: 10px" v-on:click="doCopy(curItem.Txid)">{{handleTxid(curItem.Txid)}}</span>
+                </div>
+                <div class="line"></div>
+                <!-- <div class="">
+
+                </div>
+                <div class="btn" v-on:click="showDetails()"> Show Details</div> -->
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '.content',
+        data: {
+            loading: true,
+            zh: {
+                title: "Elastos 多签钱包",
+                pending: '正在处理',
+                Received: '已接收',
+                Sent: '已发送',
+                key28: '已批准',
+                key29: '没有历史数据',
+                key30: '下拉刷新',
+                key31: '',
+                key32: '加载中...',
+                key33: '没有更多数据',
+                key34: '上拉显示更多',
+                key35: '完成',
+                key36: '至',
+                key37: '备忘录',
+                key38: '网络费',
+                key39: '费用总计',
+                key40: '确认块',
+                key41: '交易ID',
+                key42: '复制成功',
+                key43: '通过',
+                key45: "确认框",
+                key46: "取消",
+                key47: "确认",
+                key48: "你确定删除这个钱包吗？",
+                key49: "复制",
+                key50: "分享",
+                key51: '公钥总数:',
+                key52: '转账必需批准数:',
+                key53: '创建日期:',
+                key54: '历史',
+                key55: 'ELA',
+                key56: '始于',
+                key57: '到',
+                key58: '状态',
+                key59: '交易时间',
+                key60: '发送',
+                key61: '查看',
+                error0: '请输入钱包名字',
+                error4: '余额不足，请充值',
+                error5: '钱包名字不能超过30字符',
+            },
+            en: {
+                title: "Elastos Multi Sign Wallet",
+                pending: 'pending',
+                Received: 'Received',
+                Sent: 'Sent',
+                key28: 'Approved',
+                key29: 'No Histroy Data',
+                key30: 'pull Refresh',
+                key31: '',
+                key32: 'loading...',
+                key33: 'No More Data',
+                key34: 'Pull-up Load More',
+                key35: 'Complete',
+                key36: 'To',
+                key37: 'Memo',
+                key38: 'NetWork Fee',
+                key39: 'Total Cost',
+                key40: 'Confirmed in Block',
+                key41: 'Transaction ID',
+                key42: 'Copy Success',
+                key43: 'Via',
+                key45: "Confirm",
+                key46: "Cancel",
+                key47: "Confirm",
+                key48: "Are you sure to delete this wallet?",
+                key49: "Copy",
+                key50: "Share",
+                key51: 'Total public keys:',
+                key52: 'Min.required for Approval:',
+                key53: 'Date Created:',
+                key54: 'History',
+                key55: 'ELA',
+                key56: 'From',
+                key57: 'To',
+                key58: 'Status',
+                key59: 'Transaction Time',
+                key60: 'Send',
+                key61: 'View',
+                error0: 'Please enter the name of your wallet',
+                error4: 'The balance is not enough',
+                error5: "Wallet name can't be more than 30 characters",
+
+            },
+            curLangule: {},
+            curLanguleKey: 'zh',
+            address: '',
+            list: [],
+            loading: true,
+            sela: 100000000,
+            minirefresh: null,
+            listData: [],
+            pageSize: 10,
+            pageNum: 1,
+            noMoreData: '',
+            maxNum: 0,
+            showMask: false,
+            curItem: {},
+            toastShow: false,
+            toastText: '',
+            isShow: false,
+            wallet: {
+                'name': '',
+                'requiredCount': '',
+                'totalPublic': '',
+                'PublicKeys': '',
+                'Address': '',
+                'createTime': ''
+            },
+            balance: {
+                'num': 0
+            },
+            publickeyArr: [],
+            walletList: {},
+            walletName: "",
+            showMask1: false,
+        },
+        methods: {
+            view() {
+                location.href = "./publicKeyList.html?address=" + this.wallet['Address'];
+            },
+            click_close1() {
+                this.showMask = false;
+            },
+            click_ok() {
+                var did = localStorage.getItem("ELA-Multi-sig-Wallet-did") || "";
+                var obj = JSON.parse(localStorage.getItem("ELA-Multi-sig-Wallet"));
+                delete obj[this.wallet['Address']];
+                localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(obj));
+                location.href = './index.html';
+                this.showMask = false;
+            },
+            delwallet() {
+                this.showMask = true;
+            },
+            checkParms() {
+                if (this.balance['num'] <= 0) {
+                    this.toast(this.curLangule['error4']);
+                    return false;
+                }
+
+                return true;
+            },
+            send() {
+                if (this.checkParms()) {
+                    location.href = 'send.html?address=' + this.wallet['Address'];
+                }
+            },
+            shengcheng1() {
+                var baseUrl = this.getUrl();
+                turl = baseUrl + "/createWallet.html?publicArr=" + JSON.stringify(this.publickeyArr) + "&name=" + this.wallet['name'];
+                this.doCopy(turl);
+            },
+            getLen2(str) {　　　　 //将中文替换成两个英文字符来统计
+                return str.replace(/[^\x00-\xff]/g, "aa").length;
+            },
+            click_ok1(wallet) {
+                var name = wallet["name"];
+                var address = this.wallet['Address'];
+                if (name === "") {
+                    this.toast(this.curLangule["error0"]);
+                    setTimeout(() => {
+                        this.walletList[address].name = this.walletName;
+                        document.title = this.walletName;
+                        localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(this.walletList));
+                    }, 3500);
+                    return false;
+                }
+
+                if (this.getLen2(name) > 30) {
+                    this.toast(this.curLangule['error5']);
+                    setTimeout(() => {
+                        this.walletList[address].name = this.walletName;
+                        document.title = this.walletName;
+                        localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(this.walletList));
+                    }, 3500);
+                    return false;
+                }
+                this.walletName = name;
+                document.title = this.walletName;
+                this.walletList[address].name = this.walletName;
+                localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(this.walletList));
+                //this.showMask1 = false;
+            },
+            back() {
+                location.href = "./index.html";
+            },
+            showDetails() {
+
+            },
+            toast(str) {
+                var v = this;
+                v.toastText = str
+                v.toastShow = true
+                setTimeout(function() {
+                    v.toastShow = false
+                }, 1500)
+            },
+            doCopy(text) {
+                var v = this;
+                this.$copyText(text).then(function(e) {
+                    v.toast(v.curLangule['key42']);
+                }, function(e) {})
+            },
+            handleMemo1(item) {
+                var memo = item["Memo"] || "";
+                if (memo.indexOf("type:text,msg:") > -1) {
+                    memo = memo.substring(14);
+                }
+                return memo;
+            },
+            handleTxid(txid) {
+                return txid.substring(0, 16) + '...' + txid.substring(txid.length - 18, txid.length);
+            },
+            click_item(item) {
+                this.curItem = item;
+                this.showMask1 = true;
+            },
+            click_close() {
+                this.showMask1 = false;
+                this.curItem = {};
+            },
+            scientificToNumber(num) {
+                let str = num.toString();
+                let reg = /^(\d+)(e)([\-]?\d+)$/;
+                let arr, len,
+                    zero = '';
+
+                /*6e7或6e+7 都会自动转换数值*/
+                if (!reg.test(str)) {
+                    return num;
+                } else {
+                    /*6e-7 需要手动转换*/
+                    arr = reg.exec(str);
+                    len = Math.abs(arr[3]) - 1;
+                    for (var i = 0; i < len; i++) {
+                        zero += '0';
+                    }
+
+                    return '0.' + zero + arr[1];
+                }
+            },
+            handleMemo(item) {
+                var memo = item["Memo"] || "";
+                if (memo.indexOf("type:text,msg:") > -1) {
+                    memo = memo.substring(14);
+                }
+                if (memo) {
+                    memo = memo.substring(0, 8) + "......";
+                }
+                return memo;
+            },
+            handleAdress(address) {
+                return address.substring(0, 5) + "...." + address.substring(address.length - 6, address.length);
+            },
+            jisuan(val, fee) {
+                var tempFee = val - fee;
+                return this.div(tempFee, this.sela);
+            },
+            sub: function(a, b) {
+                var c, d, e;
+                try {
+                    c = a.toString().split(".")[1].length;
+                } catch (f) {
+                    c = 0;
+                }
+                try {
+                    d = b.toString().split(".")[1].length;
+                } catch (f) {
+                    d = 0;
+                }
+                return e = Math.pow(10, Math.max(c, d)), (this.mul(a, e) - this.mul(b, e)) / e;
+            },
+            mul: function(a, b) {
+                var c = 0,
+                    d = a.toString(),
+                    e = b.toString();
+                try {
+                    c += d.split(".")[1].length;
+                } catch (f) {}
+                try {
+                    c += e.split(".")[1].length;
+                } catch (f) {}
+                return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
+            },
+            div: function(a, b) {
+                var c, d, e = 0,
+                    f = 0;
+                try {
+                    e = a.toString().split(".")[1].length;
+                } catch (g) {}
+                try {
+                    f = b.toString().split(".")[1].length;
+                } catch (g) {}
+                return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), this.mul(c / d, Math.pow(10, f - e));
+            },
+            getLanugle: function() {
+                this.curLangule = this.en;
+                this.curLanguleKey = 'en';
+                var JsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+                if (JsSrc.indexOf('zh') >= 0) {
+                    // 假如浏览器语言是中文
+                    this.curLanguleKey = 'zh';
+                    this.curLangule = this.zh;
+                } else if (JsSrc.indexOf('en') >= 0) {
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                } else {
+                    // 假如浏览器语言是其它语言
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                }
+            },
+            getHistory(address) {
+                return new Promise((resovle, reject) => {
+                    $.ajax({
+                        url: 'https://node1.elaphant.app/api/1/history/' + address + '?' + "pageSize=" + this.pageSize + '&pageNum=' + this.pageNum + '&order=desc',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: 'GET',
+                        success: function(data) { //成功回调函数
+                            resovle(data);
+                        },
+                        error: function(err) { //失败回调函数
+                            reject(err);
+                        }
+                    });
+
+
+                })
+            },
+            getUrlParam: function(name) {
+                //正则表达式过滤
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                //正则规则
+                var r = window.location.search.substr(1).match(reg);
+
+                if (r != null) return decodeURI(r[2]);
+                return null;
+            },
+            dateFormat(date, sFormat) {
+                let time = {
+                    Year: 0,
+                    TYear: '0',
+                    Month: 0,
+                    TMonth: '0',
+                    Day: 0,
+                    TDay: '0',
+                    Hour: 0,
+                    THour: '0',
+                    hour: 0,
+                    Thour: '0',
+                    Minute: 0,
+                    TMinute: '0',
+                    Second: 0,
+                    TSecond: '0',
+                    Millisecond: 0
+                };
+                time.Year = date.getFullYear();
+                time.TYear = String(time.Year).substr(2);
+                time.Month = date.getMonth() + 1;
+                time.TMonth = time.Month < 10 ? "0" + time.Month : String(time.Month);
+                time.Day = date.getDate();
+                time.TDay = time.Day < 10 ? "0" + time.Day : String(time.Day);
+                time.Hour = date.getHours();
+                time.THour = time.Hour < 10 ? "0" + time.Hour : String(time.Hour);
+                time.hour = time.Hour < 13 ? time.Hour : time.Hour - 12;
+                time.Thour = time.hour < 10 ? "0" + time.hour : String(time.hour);
+                time.Minute = date.getMinutes();
+                time.TMinute = time.Minute < 10 ? "0" + time.Minute : String(time.Minute);
+                time.Second = date.getSeconds();
+                time.TSecond = time.Second < 10 ? "0" + time.Second : String(time.Second);
+                time.Millisecond = date.getMilliseconds();
+
+                return sFormat.replace(/yyyy/ig, String(time.Year))
+                    .replace(/yyy/ig, String(time.Year))
+                    .replace(/yy/ig, time.TYear)
+                    .replace(/y/ig, time.TYear)
+                    .replace(/MM/g, time.TMonth)
+                    .replace(/M/g, String(time.Month))
+                    .replace(/dd/ig, time.TDay)
+                    .replace(/d/ig, String(time.Day))
+                    .replace(/HH/g, time.THour)
+                    .replace(/H/g, String(time.Hour))
+                    .replace(/hh/g, time.Thour)
+                    .replace(/h/g, String(time.hour))
+                    .replace(/mm/g, time.TMinute)
+                    .replace(/m/g, String(time.Minute))
+                    .replace(/ss/ig, time.TSecond)
+                    .replace(/s/ig, String(time.Second))
+                    .replace(/fff/ig, String(time.Millisecond))
+            },
+            downCallback: function() {
+                var self = this;
+
+                // if (this.maxNum > 0 && this.pageNum * this.pageSize >= this.maxNum) {
+                //     this.miniRefresh.endDownLoading(true);
+                //     this.loading = false;
+                //     return;
+                // }
+                this.pageNum = 1;
+                this.getHistory(this.wallet['Address']).then((res) => {
+                    this.loading = false;
+                    if (res.status === 200) {
+                        var items = res.result || {};
+                        list = items.History || [];
+                        this.maxNum = items.TotalNum;
+                        this.listData = list;
+                        this.pageNum++;
+                        self.miniRefresh.endDownLoading(true);
+                    }
+                }).catch(() => {
+                    this.loading = false;
+                    this.listData = [];
+                    this.miniRefresh.endDownLoading(true);
+                });
+            },
+            upCallback: function() {
+                var self = this;
+                if (this.maxNum > 0 && this.listData.length >= this.maxNum) {
+                    this.miniRefresh.endUpLoading(true);
+                    this.loading = false;
+                    return;
+                }
+                this.getHistory(this.wallet['Address']).then((res) => {
+                    this.loading = false;
+                    if (res.status === 200) {
+                        var items = res.result || {};
+                        var list = res.result.History || [];
+                        this.maxNum = items.TotalNum;
+                        if (this.listData.length >= this.maxNum) {
+                            this.miniRefresh.endUpLoading(true);
+                            this.loading = false;
+                        } else {
+                            this.listData = this.listData.concat(list);
+                            this.pageNum++;
+                            this.miniRefresh.endUpLoading(false);
+                            this.loading = false;
+                        }
+                    }
+                }).catch(() => {
+                    this.loading = false;
+                    this.miniRefresh.endDownLoading(true);
+                });
+
+            },
+            getBalance(address) {
+                return new Promise((resovle, reject) => {
+                    $.ajax({
+                        url: 'https://node1.elaphant.app/api/1/balance/' + address,
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: 'GET',
+                        success: function(data) { //成功回调函数
+                            resovle(data);
+                        },
+                        error: function(err) { //失败回调函数
+                            reject(err);
+                        }
+                    });
+
+
+                })
+            }
+        },
+        mounted: function() {
+            this.getLanugle();
+            document.title = this.curLangule["title"];
+            var self = this;
+            self.miniRefresh = new MiniRefresh({
+                container: '#minirefresh',
+                down: {
+                    callback: self.downCallback,
+                    contentdown: self.curLangule['key30'],
+                    // 可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+                    contentover: self.curLangule['key31'],
+                    // 可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+                    contentrefresh: self.curLangule['key32'],
+                },
+                up: {
+                    // 默认没有锁定，可以通过API动态设置
+                    isLock: false,
+                    // 是否自动上拉加载-初始化是是否自动
+                    isAuto: true,
+                    contentdown: self.curLangule['key34'],
+                    contentrefresh: self.curLangule['key32'],
+                    contentnomore: self.curLangule['key33'],
+                    loadFull: {
+                        // 开启配置后，只要没满屏幕，就会自动加载
+                        isEnable: false,
+                        delay: 300
+                    },
+                    callback: self.upCallback
+                }
+            });
+
+            var walletList = localStorage.getItem('ELA-Multi-sig-Wallet') || "";
+            if (walletList === "") {
+                walletList = {};
+            } else {
+                walletList = JSON.parse(walletList);
+                this.walletList = walletList;
+            }
+            if (!walletList[this.wallet['Address']]) {
+                this.wallet['createTime'] = new Date().getTime() / 1000;
+                this.wallet['requiredCount'] = this.getUrlParam('requiredCount');
+                this.wallet['name'] = this.getUrlParam('name');
+                document.title = this.wallet['name'];
+                this.walletName = this.wallet['name'];
+                this.wallet['PublicKeys'] = this.getUrlParam('PublicKeys');
+                this.publickeyArr = this.wallet['PublicKeys'].split(',');
+                this.wallet["totalPublic"] = this.publickeyArr.length;
+                walletList[this.wallet['Address']] = this.wallet;
+                this.walletList = walletList;
+                localStorage.setItem('ELA-Multi-sig-Wallet', JSON.stringify(walletList));
+            } else {
+                this.wallet = walletList[this.wallet['Address']];
+                document.title = this.wallet['name'];
+                this.walletName = this.wallet['name'];
+                this.publickeyArr = this.wallet['PublicKeys'].split(',');
+            }
+        },
+
+        created: function() {
+            var item = this.getUrlParam("Data") || "";
+
+            if (item != "") {
+                var mdata = decodeURIComponent(item);
+                var json = JSON.parse(mdata);
+                this.wallet['Address'] = json.Address;
+            } else {
+                this.wallet['Address'] = this.getUrlParam("address");
+            }
+
+            this.getBalance(this.wallet['Address']).then((res) => {
+                if (res.status === 200) {
+                    this.$set(this.balance, 'num', res.result);
+                } else {
+                    this.$set(this.balance, 'num', 0);
+                }
+
+            });
+        }
+    });
+</script>
+
+</html>

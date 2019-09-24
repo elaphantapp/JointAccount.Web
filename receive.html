@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/vue-clipboard.min.js"></script>
+    <script src="./js/vue-qrcode.min.js"></script>
+    <script>
+        Vue.component(VueQrcode.name, VueQrcode);
+    </script>
+</head>
+<link rel="stylesheet" type="text/css" href="./css/reset.css">
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+</head>
+<style type="text/css">
+    body {
+        background: #F2F9FF;
+    }
+    
+    .top {
+        position: fixed;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        left: 0px;
+        top: 0px;
+        background: #0070C8;
+    }
+    
+    .top p {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 40px;
+        color: #FFFFFF;
+    }
+    
+    .top p img {
+        vertical-align: middle;
+        margin-top: -3px;
+        margin-right: 10px;
+    }
+    
+    .first {
+        margin: 0 auto;
+        height: 315px;
+        background: #FFFFFF;
+        box-shadow: 0px 6px 25px rgba(68, 110, 158, 0.08), 0px 4px 15px rgba(80, 117, 236, 0.09);
+    }
+    
+    .second {
+        margin-top: 30px;
+        height: 36px;
+        line-height: 36px;
+        background: #FFFFFF;
+        border: 1px solid #0070C8;
+        box-sizing: border-box;
+        box-shadow: 0px 2px 10px rgba(106, 147, 205, 0.1);
+        border-radius: 8px;
+    }
+    
+    .second .left {
+        display: inline-block;
+        width: 85%;
+        font-family: Bio Sans;
+        font-size: 14px;
+        color: #666666;
+        text-align: center;
+    }
+    
+    .second .right {
+        display: inline-block;
+        width: 15%;
+    }
+    
+    .second .right img {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+    }
+    
+    .toast {
+        position: fixed;
+        z-index: 2000;
+        left: 50%;
+        top: 25%;
+        transition: all .5s;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        text-align: center;
+        border-radius: 5px;
+        color: #FFF;
+        background: rgba(17, 17, 17, 0.7);
+        height: 45px;
+        line-height: 45px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: url(./images/mpc_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        z-index: -1;
+    }
+    
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="app" v-cloak>
+
+        <div class="toast" v-show="toastShow">
+            {{toastText}}
+        </div>
+        <div class="bg"></div>
+        <div class="top" @click="back">
+            <p> <img src="./images/back.png" />{{curLangule["title"]}}</p>
+        </div>
+        <div style="margin-top:80px"></div>
+        <div class="first">
+            <div style="width:300px;margin: 0 auto">
+                <qrcode :value="qrcode" :options="{ width: 300 }" style="display:block"></qrcode>
+            </div>
+        </div>
+        <div class="second" @click="doCopy">
+            <span class="left">{{qrcode}}</span><span class="right"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGESURBVHgB7ZfNccIwEEY/eTzDlRIowb6Fm9NBOoAOrA6ADpwKCB2kg/jm5AQluARuIRxQVsYJGSM5sVcTc9C7YEvDzkM/uwvg8XhaEdYZuR0HOKYKak5vE3SjpMDPJ4xWyOI9GAibnMDHtodYk1JhFHMkA/PgcQG+HM4xDhIMQtMgbevD5U3sFE6P6ICASOkjqp9nCliiJ6FlfPL1UMll0yd0QMlCi62bsfoQ4Mbxgly8IJcQLpBFQrdW506dWsbNaSFfleWbOaW0TVuWYK9gIN8WJPdCj4lJ7hf0D1vrGNb44CCLOa3AEkyqGLQLpjmWoK4ScER9RK7gbnECZ4jINHpDt1gZz6/tFpeoa6hAkOraOhS2bmZzORMq+lH4/x3LFh8ynFdxcMyC2f1e4T2m7Kr7wBIDIsCgpUL0QmV3Vz6+WeDiBblwBVl/yv8CV3AHR1A6yE3jLEGqOCs4gxpXA7wVzKa5C8kqhqWrZiXqb6hxpVAz0a39omqlj0gll8Pj8fTjE4HBaZIaLqP9AAAAAElFTkSuQmCC"/></span>
+        </div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            zh: {
+                title: 'Elastos 多签钱包',
+                key29: '复制成功'
+            },
+            en: {
+                title: 'Elastos Multi Sign Wallet',
+                key29: 'Copy Success'
+            },
+            curLangule: {},
+            qrcode: "xxxxxx",
+            toastText: "",
+            toastShow: false,
+        },
+        methods: {
+            doCopy() {
+                var v = this;
+                this.$copyText(this.qrcode).then(function(e) {
+                    v.toast(v.curLangule['key29']);
+                }, function(e) {})
+            },
+            toast(str) {
+                var v = this;
+                v.toastText = str
+                v.toastShow = true
+                setTimeout(function() {
+                    v.toastShow = false
+                }, 1500)
+            },
+            getUrlParam: function(name) {
+                //正则表达式过滤
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                //正则规则
+                var r = window.location.search.substr(1).match(reg);
+
+                if (r != null) return decodeURI(r[2]);
+                return null;
+            },
+            back() {
+                location.href = "./index.html";
+            },
+            getLanugle: function() {
+                this.curLangule = this.en;
+                this.curLanguleKey = 'en';
+                var JsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+                if (JsSrc.indexOf('zh') >= 0) {
+                    // 假如浏览器语言是中文
+                    this.curLanguleKey = 'zh';
+                    this.curLangule = this.zh;
+                } else if (JsSrc.indexOf('en') >= 0) {
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                } else {
+                    // 假如浏览器语言是其它语言
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                }
+            }
+        },
+        mounted() {
+            this.getLanugle();
+            document.title = this.curLangule["title"];
+            this.qrcode = this.getUrlParam("address") || "";
+        }
+    });
+</script>
+
+</html>
