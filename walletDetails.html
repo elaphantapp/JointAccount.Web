@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src="./js/lodash.min.js"></script>
     <script src="./js/jquery-3.2.1.min.js"></script>
-    <script src="./js/vue.js"></script>
+    <script src="./js/vue.min.js"></script>
     <script src="./js/vue-clipboard.min.js"></script>
     <script src="./js/minirefresh.min.js"></script>
     <script src="./js/vue-qrcode.min.js"></script>
@@ -1385,6 +1385,16 @@
             showMask1: false,
         },
         methods: {
+            getUrl() {
+                //获取当前网址，
+                var curPath = window.document.location.href;
+                //获取主机地址之后的目录，
+                var pathName = window.document.location.pathname;
+                var pos = curPath.indexOf(pathName);
+                //获取主机地址
+                var localhostPaht = curPath.substring(0, pos);
+                return localhostPaht;
+            },
             view() {
                 location.href = "./publicKeyList.html?address=" + this.wallet['Address'];
             },
