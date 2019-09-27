@@ -376,7 +376,7 @@
         el: '#app',
         data: {
             zh: {
-                title: 'Elastos 多签钱包',
+                title: 'ELA联合钱包',
                 key: "钱包名字 | 输入钱包名字",
                 key1: "复制",
                 key2: "添加公钥",
@@ -396,7 +396,7 @@
                 error5: '公钥重复',
             },
             en: {
-                title: 'Elastos Multi Sign Wallet',
+                title: 'ELA Joint Account',
                 key: "Wallet Name | Input your wallet name",
                 key1: "Copy",
                 key2: "Add public key",
@@ -418,19 +418,19 @@
             curLangule: {},
             walletList: {},
             schemeConfig: {
-                "AppID": "f4d54cd97afa828a9705e38eb679fad564cf3adf4cecd1a5503498155969b07baaa4c4a016084c0f21e06c59e76c33929925052d7d0ae3cfc679a0fdf48ec23f",
-                "AppName": encodeURIComponent("ELA Multi-sig Wallet"),
-                "DID": "ipFFpL1JwPRQKfhmxak8r1wWEbdkJ3rXZu",
-                "PublicKey": "035731ff69f8cfdcd9881e573143d71de2390b2e8e71fa14729e6b506f5d74939d",
+                "AppID": "2e044fec84aaf940d9d84cee0ac44cbc039f5361d4091b59f645a3088a59e061742b45b587b582ce053d4394185ba9e6804c4326a7f8bf09305f80253d771b45",
+                "AppName": encodeURIComponent("JointAcount"),
+                "DID": "ibxNTG1hBPK1rZuoc8fMy4eFQ96UYDAQ4J",
+                "PublicKey": "034c51ddc0844ff11397cc773a5b7d94d5eed05e7006fb229cf965b47f19d27c55",
                 "PublicKeys": "",
                 "RequiredCount": 2,
                 "ReturnUrl": "",
             },
             schemeConfig1: {
-                "AppID": "f4d54cd97afa828a9705e38eb679fad564cf3adf4cecd1a5503498155969b07baaa4c4a016084c0f21e06c59e76c33929925052d7d0ae3cfc679a0fdf48ec23f",
-                "AppName": encodeURIComponent("ELA Multi-sig Wallet"),
-                "DID": "ipFFpL1JwPRQKfhmxak8r1wWEbdkJ3rXZu",
-                "PublicKey": "035731ff69f8cfdcd9881e573143d71de2390b2e8e71fa14729e6b506f5d74939d",
+                "AppID": "2e044fec84aaf940d9d84cee0ac44cbc039f5361d4091b59f645a3088a59e061742b45b587b582ce053d4394185ba9e6804c4326a7f8bf09305f80253d771b45",
+                "AppName": encodeURIComponent("JointAcount"),
+                "DID": "ibxNTG1hBPK1rZuoc8fMy4eFQ96UYDAQ4J",
+                "PublicKey": "034c51ddc0844ff11397cc773a5b7d94d5eed05e7006fb229cf965b47f19d27c55",
                 "RandomNumber": "123456789",
                 "ReturnUrl": "",
                 "RequestInfo": "Nickname"
@@ -483,7 +483,7 @@
             },
             invite() {
                 var url = this.buildIdentity();
-                var turl = 'https://launch.elaphant.app?appName=ELA Multi-sig Wallet&autoRedirect=True&appTitle=ELA Multi-sig Wallet&redirectURL=' + encodeURIComponent(url);
+                var turl = 'https://launch.elaphant.app?appName=JointAcount&autoRedirect=True&appTitle=JointAcount&redirectURL=' + encodeURIComponent(url);
                 this.doCopy(turl);
             },
             buildMultiCreate() {
@@ -549,7 +549,7 @@
                     var baseUrl = this.getUrl();
                     this.schemeConfig['ReturnUrl'] = baseUrl + '/walletDetails.html?' + extraParm;
                     var url = this.buildMultiCreate();
-                    var turl = 'https://launch.elaphant.app?appName=ELA Multi-sig Wallet&autoRedirect=True&appTitle=ELA Multi-sig Wallet&redirectURL=' + encodeURIComponent(url);
+                    var turl = 'https://launch.elaphant.app?appName=JointAcount&autoRedirect=True&appTitle=JointAcount&redirectURL=' + encodeURIComponent(url);
                     location.href = turl;
                 }
             },
