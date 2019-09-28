@@ -229,8 +229,8 @@
             curLangule: {},
             walletList: {},
             schemeConfig: {
-                "AppID": "2e044fec84aaf940d9d84cee0ac44cbc039f5361d4091b59f645a3088a59e061742b45b587b582ce053d4394185ba9e6804c4326a7f8bf09305f80253d771b45",
-                "AppName": encodeURIComponent("JointAcount"),
+                "AppID": "19c93e0fad72df85ac9112361ac024caed27607fd4b4ff0f95474068801f6c494698b93add96d89001a50c4f7621035913e4c4ca6196ef028e7bf138791e623f",
+                "AppName": encodeURIComponent("JointAccount"),
                 "DID": "ibxNTG1hBPK1rZuoc8fMy4eFQ96UYDAQ4J",
                 "PublicKey": "034c51ddc0844ff11397cc773a5b7d94d5eed05e7006fb229cf965b47f19d27c55",
                 "Tx": "",
@@ -347,7 +347,7 @@
 
                         if (data.status === 200) {
                             var url = v.buildMultiTx(data.result);
-                            var turl = 'https://launch.elaphant.app?appName=JointAcount&autoRedirect=True&appTitle=JointAcount&redirectURL=' + encodeURIComponent(url);
+                            var turl = 'https://launch.elaphant.app?appName=JointAccount&autoRedirect=True&appTitle=JointAccount&redirectURL=' + encodeURIComponent(url);
                             location.href = turl;
                         } else if (data.status === 400) {
                             if (data.result === "Not Enough UTXO") {
