@@ -121,6 +121,7 @@
     }
     
     .create p {
+        display: inline-block;
         width: 232px;
         height: 64px;
         line-height: 64px;
@@ -292,8 +293,9 @@
                 </div>
             </div>
 
-            <div class="create row xiaoshuo" @click="create()">
-                <p>+ {{curLangule["key3"]}}</p>
+            <div class="create row xiaoshuo">
+                <img src="./images/help.png" @click="help()">
+                <p @click="create()">+ {{curLangule["key3"]}}</p>
             </div>
         </div>
 
@@ -348,8 +350,19 @@
             toastShow: false,
             balanceObj: {},
             name: "",
+            curLanguleKey: ""
         },
         methods: {
+            help() {
+                switch (this.curLanguleKey) {
+                    case 'zh':
+                        window.open('./help_zh.html');
+                        break;
+                    case 'en':
+                        window.open('./help_en.html');
+                        break;
+                }
+            },
             getUrl() {
                 //获取主机地址
                 var localhostPaht = window.location.protocol + "//" + window.location.host;;

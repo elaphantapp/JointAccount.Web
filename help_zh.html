@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/pdfobject.min.js"></script>
+    <script>
+        Vue.use(PDFObject);
+    </script>
+    <script src="./js/lodash.min.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?9d750f1550c132d229f6a27ceaf5abaa";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+</head>
+<style type="text/css">
+    body {
+        background: #ffffff;
+    }
+    
+    #pdf-content {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #999;
+    }
+    
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<body>
+    <div id="app" v-cloak>
+        <div id="pdf-content"></div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            zh: {
+                title: 'ELA联合钱包',
+            },
+            en: {
+                title: 'ELA Joint Account',
+            },
+            curLangule: {},
+            curLanguleKey: ""
+        },
+        methods: {
+            getLanugle: function() {
+                this.curLangule = this.en;
+                this.curLanguleKey = 'en';
+                var JsSrc = (navigator.language || navigator.browserLanguage).toLowerCase();
+                if (JsSrc.indexOf('zh') >= 0) {
+                    // 假如浏览器语言是中文
+                    this.curLanguleKey = 'zh';
+                    this.curLangule = this.zh;
+                } else if (JsSrc.indexOf('en') >= 0) {
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                } else {
+                    // 假如浏览器语言是其它语言
+                    this.curLangule = this.en;
+                    this.curLanguleKey = 'en';
+                }
+            }
+        },
+        beforeMount() {
+            this.$nextTick(function() {
+                PDFObject.embed("./Elephant_Wallet_Joint_Account_zh.pdf", "#pdf-content");
+            })
+        },
+        mounted() {
+            this.getLanugle();
+            document.title = this.curLangule["title"];
+        }
+    });
+</script>
+
+</html>
