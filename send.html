@@ -8,7 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src="./js/vue.min.js"></script>
     <script src="./js/lodash.min.js"></script>
+    <script src="./js/md5.min.js"></script>
     <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/vue-qrcode.min.js"></script>
+    <script>
+        Vue.component(VueQrcode.name, VueQrcode);
+    </script>
     <link rel="stylesheet" type="text/css" href="./css/reset.css">
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
 </head>
@@ -126,6 +132,23 @@
         z-index: -1;
     }
     
+    body {
+        height: 100%;
+    }
+    
+    .parent {
+        /* position: relative; */
+        width: 100%;
+        height: 100%;
+    }
+    
+    .parent .item1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
     [v-cloak] {
         display: none;
     }
@@ -136,54 +159,77 @@
         <div class="toast" v-show="toastShow">
             {{toastText}}
         </div>
-        <div class="bg"></div>
-        <div class="top" @click="back">
-            <p> <img src="./images/back.png" />{{curLangule["title"]}}</p>
-        </div>
-        <div style="margin-top:90px"></div>
-        <div class="container">
-            <div style=" padding: 10px 20px 10px 15px;">
-                <div class="row">
-                    <div class="col-xs-12 leftright" style="text-align:left">{{curLangule["key4"]}}：{{balance["num"]}} ELA</div>
-                </div>
+        <div v-if="!isQrcode">
+            <div class="bg"></div>
+            <div class="top" @click="back">
+                <p> <img src="./images/back.png" />{{curLangule["title"]}}</p>
             </div>
-            <div class="first">
-                <div class="row hang">
-                    <div class="col-xs-1 leftright" style="line-height: 60px">
-                        {{curLangule["key5"]}}
-                    </div>
-                    <div class="col-xs-11 leftright" style="border-bottom: 1px solid #DDDDDD;">
-                        <img src="./images/line.png" /><input :placeholder="curLangule['key']" v-model="elaAdress" />
+            <div style="margin-top:90px"></div>
+            <div class="container">
+                <div style=" padding: 10px 20px 10px 15px;">
+                    <div class="row">
+                        <div class="col-xs-12 leftright" style="text-align:left">{{curLangule["key4"]}}：{{balance["num"]}} ELA</div>
                     </div>
                 </div>
+                <div class="first">
+                    <div class="row hang">
+                        <div class="col-xs-1 leftright" style="line-height: 60px">
+                            {{curLangule["key5"]}}
+                        </div>
+                        <div class="col-xs-11 leftright" style="border-bottom: 1px solid #DDDDDD;">
+                            <img src="./images/line.png" /><input :placeholder="curLangule['key']" v-model="elaAdress" />
+                        </div>
+                    </div>
 
-                <div class="row hang">
-                    <div class="col-xs-1 leftright" style="line-height: 60px">
-                        {{curLangule["key6"]}}
+                    <div class="row hang">
+                        <div class="col-xs-1 leftright" style="line-height: 60px">
+                            {{curLangule["key6"]}}
+                        </div>
+                        <div class="col-xs-11 leftright" style="border-bottom: 1px solid #DDDDDD;">
+                            <img src="./images/line.png" /><input :placeholder="curLangule['key1']" v-model="amount" />
+                        </div>
                     </div>
-                    <div class="col-xs-11 leftright" style="border-bottom: 1px solid #DDDDDD;">
-                        <img src="./images/line.png" /><input :placeholder="curLangule['key1']" v-model="amount" />
-                    </div>
-                </div>
 
-                <div class="row hang">
-                    <div class="col-xs-1 leftright" style="line-height: 60px">
-                        {{curLangule["key7"]}}
-                    </div>
-                    <div class="col-xs-11 leftright">
-                        <img src="./images/line.png" /><input :placeholder="curLangule['key2']" v-model="memo" />
+                    <div class="row hang">
+                        <div class="col-xs-1 leftright" style="line-height: 60px">
+                            {{curLangule["key7"]}}
+                        </div>
+                        <div class="col-xs-11 leftright">
+                            <img src="./images/line.png" /><input :placeholder="curLangule['key2']" v-model="memo" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style=" padding: 10px 20px 20px 40px;">
-                <div class="row">
-                    <div class="col-xs-12 leftright" style="text-align: right">{{curLangule["key3"]}}0.0000486 ELA</div>
+                <div style=" padding: 10px 20px 20px 40px;">
+                    <div class="row">
+                        <div class="col-xs-12 leftright" style="text-align: right">{{curLangule["key3"]}}0.0000486 ELA</div>
+                    </div>
                 </div>
-            </div>
-            <div class="third">
-                <span class="right" @click="send">{{curLangule["key8"]}}</span>
+                <div class="third">
+                    <span class="right" @click="send">{{curLangule["key8"]}}</span>
+                </div>
             </div>
         </div>
+
+        <div class="parent">
+            <div class="item1">
+                <div style="text-align: center;background-color: #ffffff;padding:20px 20px 20px 20px;">
+                    <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="500">
+                        <!-- 轮播（Carousel）项目 -->
+                        <div class="carousel-inner">
+                            <div class="item" v-for="(item, key,index) in  qrArr" :class="{
+                                            'active':item.index=== 0
+                                          }">
+                                <qrcode :value="item.data" :options="{ width: 500 }" style="display:block" v-if="qrArr.length==1"></qrcode>
+                                <qrcode :value="JSON.stringify(item)" :options="{ width: 500 }" style="display:block" v-if="qrArr.length>1"></qrcode>
+                            </div>
+
+                        </div>
+                    </div>
+                    <p style="font-family:Bio Sans;font-size: 18px;color:#333333;margin-top: 20px" v-if="qrArr.length>0">{{curLangule["key9"]}}</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 <script>
@@ -201,6 +247,7 @@
                 key6: '数量',
                 key7: '备注',
                 key8: '发送',
+                key9: '打开大象App扫描',
                 error5: '请输入ELA接收地址',
                 error6: '请输入ELA金额',
                 error7: '请输入正确的金额',
@@ -219,6 +266,7 @@
                 key6: 'Amount',
                 key7: 'Memo',
                 key8: 'Send',
+                key9: 'Open Elephant App to scan',
                 error5: 'Please enter ELA receive address',
                 error6: 'Please enter the amount of ELA',
                 error7: 'Wrong Amount',
@@ -247,8 +295,43 @@
             amount: "",
             memo: "",
             sela: 100000000,
+            isQrcode: false,
+            qrArr: []
         },
         methods: {
+            fixedLengthFormatString(str, num) {
+                var hash = md5.create();
+                hash.update(str);
+                var md5s = hash.hex();
+                if (str == null || str == undefined) return null;
+                if (!(/^[0-9]*[1-9][0-9]*$/.test(num))) return null;
+                var array = new Array();
+                let len = str.length;
+                for (var i = 0; i < (len / num); i++) {
+                    if ((i + 1) * num > len) {
+                        let totalNum = parseInt((len / num).toString());
+                        let curNum = i;
+                        array.push({
+                            "name": 'MultiQrContent',
+                            "total": totalNum + 1,
+                            "index": curNum,
+                            "data": str.substring(i * num, (i + 1) * num),
+                            "md5": md5s
+                        });
+                    } else {
+                        let totalNum = parseInt((len / num).toString());
+                        let curNum = i;
+                        array.push({
+                            "name": 'MultiQrContent',
+                            "total": totalNum + 1,
+                            "index": curNum,
+                            "data": str.substring(i * num, (i + 1) * num),
+                            "md5": md5s
+                        });
+                    }
+                }
+                return array;
+            },
             getUrl() {
                 //获取主机地址
                 var localhostPaht = window.location.protocol + "//" + window.location.host;
@@ -315,10 +398,16 @@
                 return numPattern.test(text);
             },
             buildMultiTx(tx) {
+
+                var first = tx.Transactions[0];
+                tx.Transactions = [];
+                tx.Transactions.push(first);
+
                 if (this.memo != "") {
                     var msg = "type:text,msg:";
                     tx.Transactions[0].Memo = msg + this.memo;
                 }
+
                 var txJson = JSON.stringify(tx);
                 this.schemeConfig['Tx'] = txJson;
 
@@ -347,8 +436,8 @@
 
                         if (data.status === 200) {
                             var url = v.buildMultiTx(data.result);
-                            var turl = 'https://launch.elaphant.app?appName=JointAccount&autoRedirect=True&appTitle=JointAccount&redirectURL=' + encodeURIComponent(url);
-                            location.href = turl;
+                            this.qrArr = this.fixedLengthFormatString(url, 800);
+                            this.isQrcode = true;
                         } else if (data.status === 400) {
                             if (data.result === "Not Enough UTXO") {
                                 this.toast(this.curLangule['error8']);
@@ -384,7 +473,7 @@
                     return false;
                 }
 
-                if (this.amount > this.balance['num']) {
+                if (parseFloat(this.amount) > parseFloat(this.balance['num'])) {
                     this.toast(this.curLangule['error8']);
                     return;
                 }
