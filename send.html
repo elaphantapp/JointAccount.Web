@@ -213,19 +213,20 @@
         <div class="parent">
             <div class="item1">
                 <div style="text-align: center;background-color: #ffffff;padding:20px 20px 20px 20px;">
-                    <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="500">
+                    <div id="myCarousel" class="carousel" data-ride="carousel" data-interval="400">
                         <!-- 轮播（Carousel）项目 -->
                         <div class="carousel-inner">
                             <div class="item" v-for="(item, key,index) in  qrArr" :class="{
                                             'active':item.index=== 0
                                           }">
-                                <qrcode :value="item.data" :options="{ width: 500 }" style="display:block" v-if="qrArr.length==1"></qrcode>
-                                <qrcode :value="JSON.stringify(item)" :options="{ width: 500 }" style="display:block" v-if="qrArr.length>1"></qrcode>
+                                <qrcode :value="item.data" :options="{ width: 600 }" style="display:block" v-if="qrArr.length==1"></qrcode>
+                                <qrcode :value="JSON.stringify(item)" :options="{ width: 600 }" style="display:block" v-if="qrArr.length>1"></qrcode>
                             </div>
 
                         </div>
                     </div>
-                    <p style="font-family:Bio Sans;font-size: 18px;color:#333333;margin-top: 20px" v-if="qrArr.length>0">{{curLangule["key9"]}}</p>
+                    <p style="font-family:Bio Sans;font-size: 18px;color:#333333;margin-top: 10px" v-if="qrArr.length>0">{{qrIndex}}/{{qrArr.length}}</p>
+                    <p style="font-family:Bio Sans;font-size: 18px;color:#333333;margin-top: 5px" v-if="qrArr.length>0">{{curLangule["key9"]}}</p>
                 </div>
             </div>
         </div>
@@ -296,7 +297,8 @@
             memo: "",
             sela: 100000000,
             isQrcode: false,
-            qrArr: []
+            qrArr: [],
+            qrIndex: 1,
         },
         methods: {
             fixedLengthFormatString(str, num) {
@@ -436,7 +438,9 @@
 
                         if (data.status === 200) {
                             var url = v.buildMultiTx(data.result);
-                            this.qrArr = this.fixedLengthFormatString(url, 800);
+                            var qr = this.fixedLengthFormatString(url, 1000);
+                            this.qrArr = qr;
+                            //this.qrArr.push(qr);
                             this.isQrcode = true;
                         } else if (data.status === 400) {
                             if (data.result === "Not Enough UTXO") {
@@ -551,6 +555,16 @@
             }
         },
         mounted() {
+            var that = this;
+            $('#myCarousel').on('slide.bs.carousel', function(event) {
+                var $hoder = $('#myCarousel').find('.item'),
+                    $items = $(event.relatedTarget);
+                //getIndex就是轮播到当前位置的索引
+                var getIndex = $hoder.index($items);
+                if (getIndex > -1) {
+                    that.qrIndex = getIndex;
+                }
+            });
             this.getLanugle();
             document.title = this.curLangule["title"];
             this.address = this.getUrlParam("address");
