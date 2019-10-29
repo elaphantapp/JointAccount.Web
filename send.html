@@ -307,7 +307,7 @@
         },
         methods: {
             down() {
-                var filename = "tx" + parseInt(new Date().getTime() / 1000) + ".elasign";
+                var filename = "tx" + new Date().getTime() + ".elasign";
                 this.downJson(this.downQr, filename);
             },
             downJson(content, filename) {
