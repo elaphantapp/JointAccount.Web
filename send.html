@@ -228,7 +228,9 @@
                     <p style="font-family:Bio Sans;font-size: 18px;color:#333333;margin-top: 10px" v-if="qrArr.length>0">{{qrIndex}}/{{qrArr.length}}</p>
                     <p style="font-family:Bio Sans;font-size: 18px;color:#333333;margin-top: 5px" v-if="qrArr.length>0">{{curLangule["key9"]}}</p>
                 </div>
+                <p style="font-family:Bio Sans;font-size: 18px;color: #31AEFF;;margin-top: -30px;text-decoration: underline;cursor: pointer;text-align: center" @click="down()" v-if="downQr">{{curLangule["key10"]}}</p>
             </div>
+
         </div>
 
     </div>
@@ -249,6 +251,7 @@
                 key7: '备注',
                 key8: '发送',
                 key9: '打开大象App扫描',
+                key10: '下载 json 文件',
                 error5: '请输入ELA接收地址',
                 error6: '请输入ELA金额',
                 error7: '请输入正确的金额',
@@ -268,6 +271,7 @@
                 key7: 'Memo',
                 key8: 'Send',
                 key9: 'Open Elephant App to scan',
+                key10: 'Download file.json',
                 error5: 'Please enter ELA receive address',
                 error6: 'Please enter the amount of ELA',
                 error7: 'Wrong Amount',
@@ -299,8 +303,27 @@
             isQrcode: false,
             qrArr: [],
             qrIndex: 1,
+            downQr: "",
         },
         methods: {
+            down() {
+                var filename = "tx" + parseInt(new Date().getTime() / 1000) + ".elasign";
+                this.downJson(this.downQr, filename);
+            },
+            downJson(content, filename) {
+                // 创建隐藏的可下载链接
+                var eleLink = document.createElement('a');
+                eleLink.download = filename;
+                eleLink.style.display = 'none';
+                // 字符内容转变成blob地址
+                var blob = new Blob([content]);
+                eleLink.href = URL.createObjectURL(blob);
+                // 触发点击
+                document.body.appendChild(eleLink);
+                eleLink.click();
+                // 然后移除
+                document.body.removeChild(eleLink);
+            },
             fixedLengthFormatString(str, num) {
                 var hash = md5.create();
                 hash.update(str);
@@ -438,6 +461,7 @@
 
                         if (data.status === 200) {
                             var url = v.buildMultiTx(data.result);
+                            this.downQr = url;
                             var qr = this.fixedLengthFormatString(url, 1000);
                             this.qrArr = qr;
                             //this.qrArr.push(qr);
