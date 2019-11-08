@@ -465,7 +465,7 @@
             },
             buildIdentity() {
                 var baseUrl = this.getUrl();
-                this.schemeConfig1['ReturnUrl'] = baseUrl + '/createWallet.html?publicArr=' + JSON.stringify(this.publickeyArr) + "&name=" + this.walletName;
+                this.schemeConfig1['ReturnUrl'] = baseUrl + '/createWallet.html?publicArr=' + JSON.stringify(this.publickeyArr) + "&name=" + this.walletName + '&requiredCount=' + this.schemeConfig['RequiredCount'];
                 var url = "elaphant://identity?";
                 _.forEach(this.schemeConfig1, function(val, key, index) {
                     if (key === 'ReturnUrl' || key === 'RequestInfo') {
@@ -617,6 +617,7 @@
         },
         mounted() {
             var publicStr = this.getUrlParam("publicArr") || "";
+            var requiredCount = this.getUrlParam("requiredCount") || "";
             var name = this.getUrlParam("name") || "";
             if (publicStr != "") {
                 this.publickeyArr = JSON.parse(publicStr);
@@ -646,11 +647,17 @@
             this.getLanugle();
             document.title = this.curLangule["title"];
             this.number = this.publickeyArr.length;
-            if (this.publickeyArr.length > 2) {
-                this.schemeConfig['RequiredCount'] = this.publickeyArr.length - 1;
+            if (requiredCount === '') {
+                if (this.publickeyArr.length > 2) {
+                    this.schemeConfig['RequiredCount'] = this.publickeyArr.length - 1;
+                } else {
+                    this.schemeConfig['RequiredCount'] = 2;
+                }
             } else {
-                this.schemeConfig['RequiredCount'] = 2;
+                parseInt
+                this.schemeConfig['RequiredCount'] = parseInt(requiredCount);
             }
+
         }
     });
 </script>
