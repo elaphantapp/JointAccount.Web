@@ -1422,7 +1422,7 @@
             },
             shengcheng1() {
                 var baseUrl = this.getUrl();
-                turl = baseUrl + "/createWallet.html?publicArr=" + JSON.stringify(this.publickeyArr) + "&name=" + this.wallet['name'] + "&requiredCount=" + this.requiredCount;
+                turl = baseUrl + "/createWallet.html?publicArr=" + JSON.stringify(this.publickeyArr) + "&name=" + this.wallet['name'] + "&requiredCount=" + this.wallet['requiredCount'];
                 this.doCopy(turl);
             },
             getLen2(str) {　　　　 //将中文替换成两个英文字符来统计

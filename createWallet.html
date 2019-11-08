@@ -647,14 +647,13 @@
             this.getLanugle();
             document.title = this.curLangule["title"];
             this.number = this.publickeyArr.length;
-            if (requiredCount === '') {
+            if (requiredCount === '' || requiredCount === 'undefined') {
                 if (this.publickeyArr.length > 2) {
                     this.schemeConfig['RequiredCount'] = this.publickeyArr.length - 1;
                 } else {
                     this.schemeConfig['RequiredCount'] = 2;
                 }
             } else {
-                parseInt
                 this.schemeConfig['RequiredCount'] = parseInt(requiredCount);
             }
 
