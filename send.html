@@ -201,7 +201,7 @@
                 </div>
                 <div style=" padding: 10px 20px 20px 40px;">
                     <div class="row">
-                        <div class="col-xs-12 leftright" style="text-align: right">{{curLangule["key3"]}}0.0000486 ELA</div>
+                        <div class="col-xs-12 leftright" style="text-align: right" v-if="fee['num']">{{curLangule["key3"]}}{{fee['num']}} ELA</div>
                     </div>
                 </div>
                 <div class="third">
@@ -304,8 +304,27 @@
             qrArr: [],
             qrIndex: 1,
             downQr: "",
+            fee: {
+                'num': ''
+            }
         },
         methods: {
+            getFee() {
+                return new Promise((resovle, reject) => {
+                    $.ajax({
+                        url: 'https://node1.elaphant.app/api/1/fee',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: 'GET',
+                        success: function(data) { //成功回调函数
+                            resovle(data);
+                        },
+                        error: function(err) { //失败回调函数
+                            reject(err);
+                        }
+                    });
+                });
+            },
             down() {
                 var filename = "tx" + new Date().getTime() + ".elasign";
                 this.downJson(this.downQr, filename);
@@ -576,7 +595,26 @@
                     this.curLangule = this.en;
                     this.curLanguleKey = 'en';
                 }
+            },
+            accDiv(arg1, arg2) {
+                var t1 = 0,
+                    t2 = 0,
+                    r1, r2;
+                try {
+                    t1 = arg1.toString().split(".")[1].length
+                } catch (e) {}
+                try {
+                    t2 = arg2.toString().split(".")[1].length
+                } catch (e) {}
+                with(Math) {
+                    r1 = Number(arg1.toString().replace(".", ""))
+                    r2 = Number(arg2.toString().replace(".", ""))
+                    return (r1 / r2) * pow(10, t2 - t1);
+                }
             }
+        },
+        create() {
+
         },
         mounted() {
             var that = this;
@@ -599,6 +637,15 @@
                 } else {
                     this.$set(this.balance, 'num', 0);
                 }
+            });
+
+            this.getFee().then((res) => {
+                if (res.status === 200) {
+                    let num = this.accDiv(res.result, this.sela);
+                    this.$set(this.fee, 'num', num);
+                }
+            }).catch(() => {
+
             });
         }
     });
