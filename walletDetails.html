@@ -1580,7 +1580,7 @@
             getHistory(address) {
                 return new Promise((resovle, reject) => {
                     $.ajax({
-                        url: 'https://node1.elaphant.app/api/1/history/' + address + '?' + "pageSize=" + this.pageSize + '&pageNum=' + this.pageNum + '&order=desc',
+                        url: 'https://node1.elaphant.app/api/v2/history/' + address + '?' + "pageSize=" + this.pageSize + '&pageNum=' + this.pageNum + '&order=desc',
                         dataType: 'json',
                         contentType: 'application/json',
                         type: 'GET',
