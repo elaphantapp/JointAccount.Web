@@ -1186,10 +1186,12 @@
                                 </div>
                                 <div class="col-xs-3" style="height:40px;overflow: auto">{{handleMemo1(item)}}</div>
                                 <div class="col-xs-1">
-                                    <span class="status" v-if="item.Type=='income'" style="color: #1BC48C;">{{curLangule['Received']}}</span>
-                                    <span class="status" v-if="item.Type=='spend'" style="color: #FF4041;">{{curLangule['Sent']}}</span>
+                                    <span class="status" v-if="item.Type=='income'&&item.Status=='pending'" style="color: #1BC48C;">{{curLangule['Receiving']}}</span>
+                                    <span class="status" v-if="item.Type=='income'&&item.Status=='confirmed'" style="color: #1BC48C;">{{curLangule['Received']}}</span>
+                                    <span class="status" v-if="item.Type=='spend'&&item.Status=='confirmed'" style="color: #FF4041;">{{curLangule['Sent']}}</span>
+                                    <span class="status" v-if="item.Type=='spend'&&item.Status=='pending'" style="color: #FF4041;">{{curLangule['Sending']}}</span>
                                 </div>
-                                <div class="col-xs-2">{{dateFormat(new Date(item.CreateTime*1000),'yyyy-MM-dd HH:mm:ss')}}</div>
+                                <div class="col-xs-2">{{handleTime(item)}}</div>
                             </div>
                         </div>
                     </div>
@@ -1215,15 +1217,17 @@
                 <div class="close" v-on:click="click_close">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADLSURBVHgB7ZOxDQIhFIaBhtA5giO4ghs4wo2gJZVYUeoIN4IbuIIjOIIdoQH5TUgu5D295ky83N/c8T/+L/AAIRb9rSRleu/X5dPFGC/OuSc1p/grY0yXUrpaax9tXVEhpdROSnnUWt8AoKCo5ZzPWADJoMwQQl9C9wLftPAKRQ1zsCuKQbaCAWzhtx7XKhZMwd+BEdCv4BaO8RgopMRE+n0rJjk8CloBn2pDkT0uwT0XxD+8es/x+igGd3h9CR241QzgJzxpsWheegEfssESO4AuEAAAAABJRU5ErkJggg=="
                     /></div>
-                <div class="leixing" v-if="curItem.Type=='spend'">{{curLangule['Sent']}}</div>
-                <div class="leixing" v-if="curItem.Type=='income'" style="color: #24CF94;">{{curLangule['Received']}}</div>
+                <div class="leixing" v-if="curItem.Type=='spend'&&curItem.Status=='pending'">{{curLangule['Sending']}}</div>
+                <div class="leixing" v-if="curItem.Type=='spend'&&curItem.Status=='confirmed'">{{curLangule['Sent']}}</div>
+                <div class="leixing" v-if="curItem.Type=='income'&&curItem.Status=='pending'" style="color: #24CF94;">{{curLangule['Receiving']}}</div>
+                <div class="leixing" v-if="curItem.Type=='income'&&curItem.Status=='confirmed'" style="color: #24CF94;">{{curLangule['Received']}}</div>
                 <div class="price" v-if="curItem.Type=='spend'">-{{scientificToNumber(jisuan(curItem.Value,curItem.Fee))}} ELA</div>
                 <div class="price" v-if="curItem.Type=='income'">+{{scientificToNumber(div(curItem.Value,sela))}} ELA</div>
                 <div class="line"></div>
                 <div class="hang1">
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAC6SURBVHgBfZDBDcIwDEW/IwboEHBvxQJlkvaOQDBB2xVAnFs26Z1DO0CRGIEJYmyaIAhVLSWS42fnfxNcLG/nFAsqAI4BiuSpZWuv9/W+0Tq9oe6iQInJoHJIthWtulPOMDVmgzdGoGyyBDwI1LiphZE79QU9H8hQw+Dc9cUKPp1YMcBHNaEQ7I/mSMHeJ/JVDSO5/TPWCsjVdycsDgj1yprMkOzaAA6xSndJPnVrykZzLLqpV2gcBLwAUTZGK1w9+okAAAAASUVORK5CYII="
                     /><span class="shuoming">{{curLangule["key35"]}}</span>
-                    <span class="content">{{dateFormat(new Date(curItem.CreateTime*1000),'yyyy-MM-dd HH:mm:ss')}}</span>
+                    <span class="content">{{handleTime(curItem)}}</span>
                 </div>
                 <div class="hang1">
                     <span class="shuoming" v-if="curItem.Type=='spend'">{{curLangule["key36"]}}</span>
@@ -1269,7 +1273,9 @@
             zh: {
                 title: "ELA联合钱包",
                 pending: '正在处理',
+                Receiving: '接收中',
                 Received: '已接收',
+                Sending: '发送中',
                 Sent: '已发送',
                 key28: '已批准',
                 key29: '没有历史数据',
@@ -1311,7 +1317,9 @@
             en: {
                 title: "ELA Joint Account",
                 pending: 'pending',
+                Receiving: 'Receiving',
                 Received: 'Received',
+                Sending: 'Sending',
                 Sent: 'Sent',
                 key28: 'Approved',
                 key29: 'No Histroy Data',
@@ -1385,6 +1393,12 @@
             showMask1: false,
         },
         methods: {
+            handleTime(item) {
+                if (item.CreateTime === 0) {
+                    return '.......';
+                }
+                return this.dateFormat(new Date(item.CreateTime * 1000), 'yyyy-MM-dd HH:mm:ss')
+            },
             getUrl() {
                 //获取主机地址
                 var localhostPaht = window.location.protocol + "//" + window.location.host;
@@ -1520,45 +1534,41 @@
                 return address.substring(0, 5) + "...." + address.substring(address.length - 6, address.length);
             },
             jisuan(val, fee) {
-                var tempFee = val - fee;
+                var tempFee = this.sub(val, fee);
                 return this.div(tempFee, this.sela);
             },
-            sub: function(a, b) {
-                var c, d, e;
+            sub(arg1, arg2) {
+                var r1, r2, m, n;
                 try {
-                    c = a.toString().split(".")[1].length;
-                } catch (f) {
-                    c = 0;
+                    r1 = arg1.toString().split(".")[1].length;
+                } catch (e) {
+                    r1 = 0;
                 }
                 try {
-                    d = b.toString().split(".")[1].length;
-                } catch (f) {
-                    d = 0;
+                    r2 = arg2.toString().split(".")[1].length;
+                } catch (e) {
+                    r2 = 0;
                 }
-                return e = Math.pow(10, Math.max(c, d)), (this.mul(a, e) - this.mul(b, e)) / e;
+                m = Math.pow(10, Math.max(r1, r2));
+                //动态控制精度长度
+                n = (r1 >= r2) ? r1 : r2;
+                return ((arg1 * m - arg2 * m) / m).toFixed(n);
             },
-            mul: function(a, b) {
-                var c = 0,
-                    d = a.toString(),
-                    e = b.toString();
+            div(arg1, arg2) {
+                var t1 = 0,
+                    t2 = 0,
+                    r1, r2;
                 try {
-                    c += d.split(".")[1].length;
-                } catch (f) {}
+                    t1 = arg1.toString().split(".")[1].length;
+                } catch (e) {}
                 try {
-                    c += e.split(".")[1].length;
-                } catch (f) {}
-                return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
-            },
-            div: function(a, b) {
-                var c, d, e = 0,
-                    f = 0;
-                try {
-                    e = a.toString().split(".")[1].length;
-                } catch (g) {}
-                try {
-                    f = b.toString().split(".")[1].length;
-                } catch (g) {}
-                return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), this.mul(c / d, Math.pow(10, f - e));
+                    t2 = arg2.toString().split(".")[1].length;
+                } catch (e) {}
+                with(Math) {
+                    r1 = Number(arg1.toString().replace(".", ""));
+                    r2 = Number(arg2.toString().replace(".", ""));
+                    return (r1 / r2) * pow(10, t2 - t1);
+                }
             },
             getLanugle: function() {
                 this.curLangule = this.en;
@@ -1580,7 +1590,7 @@
             getHistory(address) {
                 return new Promise((resovle, reject) => {
                     $.ajax({
-                        url: 'https://node1.elaphant.app/api/v2/history/' + address + '?' + "pageSize=" + this.pageSize + '&pageNum=' + this.pageNum + '&order=desc',
+                        url: 'https://node1.elaphant.app/api/v3/history/' + address + '?' + "pageSize=" + this.pageSize + '&pageNum=' + this.pageNum + '&order=desc',
                         dataType: 'json',
                         contentType: 'application/json',
                         type: 'GET',
