@@ -152,6 +152,12 @@
     [v-cloak] {
         display: none;
     }
+    
+    .third .clicked {
+        background-color: #eeeeee;
+        color: #333;
+        border: 1px solid #eeeeee;
+    }
 </style>
 
 <body>
@@ -205,7 +211,7 @@
                     </div>
                 </div>
                 <div class="third">
-                    <span class="right" @click="send">{{curLangule["key8"]}}</span>
+                    <span class="right" @click="send" :class="{clicked:isShow}">{{curLangule["key8"]}}</span>
                 </div>
             </div>
         </div>
@@ -295,8 +301,8 @@
             address: "",
             toastText: "",
             toastShow: false,
-            // elaAdress: "EYf3wvaiNHWvrEXL1bwSV5LytbhiPb6Vby",
-            elaAdress: "",
+            elaAdress: "EYf3wvaiNHWvrEXL1bwSV5LytbhiPb6Vby",
+            //elaAdress: "",
             amount: "",
             memo: "",
             sela: 100000000,
@@ -306,7 +312,8 @@
             downQr: "",
             fee: {
                 'num': ''
-            }
+            },
+            isShow: false
         },
         methods: {
             getFee() {
@@ -474,24 +481,28 @@
                 return url;
             },
             send() {
-                if (this.checkParm()) {
+                if (this.checkParm() && !this.isShow) {
+                    this.isShow = true;
                     var v = this;
                     this.getTx().then((data) => {
 
                         if (data.status === 200) {
+
                             var url = v.buildMultiTx(data.result);
                             this.downQr = url;
                             var qr = this.fixedLengthFormatString(url, 1000);
                             this.qrArr = qr;
                             //this.qrArr.push(qr);
                             this.isQrcode = true;
+                            this.isShow = false;
                         } else if (data.status === 400) {
+                            this.isShow = false;
                             if (data.result === "Not Enough UTXO") {
                                 this.toast(this.curLangule['error8']);
                             }
                         }
                     }).catch((err => {
-
+                        this.isShow = false;
                     }));
                 }
             },
